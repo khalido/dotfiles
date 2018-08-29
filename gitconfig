@@ -3,5 +3,10 @@
 	username = khalido
 	email = khalid.omar@gmail.com
 
+[credential]
+    # 28800 is 8hr expiry, 86400 is 24hrs
+	helper = cache --timeout 28800
+
 [alias]
-    
+	a = add
+	cm = commit -m 

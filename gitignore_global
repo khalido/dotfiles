@@ -1,0 +1,17 @@
+# global gitignore stuff
+# git config --global core.excludesfile ~/.gitignore_global
+
+# ko
+.secret     # where I save my api keys (yes not the best idea)
+
+# OS X #
+########
+.DS_Store
+.Spotlight-V100
+.Trashes
+._*         # osx thumbnails
+
+# Windows #
+###########
+Thumbs.db
+desktop.ini
