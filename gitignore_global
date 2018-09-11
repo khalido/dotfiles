@@ -2,16 +2,55 @@
 # git config --global core.excludesfile ~/.gitignore_global
 
 # ko
-.secret     # where I save my api keys (yes not the best idea)
+.secret     # where I save my api keys (yes its not the best idea)
 
-# OS X #
-########
+# OS generated files #
+######################
 .DS_Store
+.DS_Store?
+._*
 .Spotlight-V100
 .Trashes
-._*         # osx thumbnails
-
-# Windows #
-###########
+ehthumbs.db
 Thumbs.db
 desktop.ini
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.msi
+
+# Temporary files #
+###################
+*.bak
+*.swp
+*.swo
+*~
+*#
+
+# IDE files #
+#############
+.vscode
+.idea
+.iml
+*.sublime-workspace
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+*.pyo

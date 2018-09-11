@@ -10,3 +10,5 @@
 [alias]
 	a = add
 	cm = commit -m 
+[core]
+	excludesfile = /Users/ko/.gitignore_global
