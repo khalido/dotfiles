@@ -1,5 +1,8 @@
 code_dir=~/code                    # all my code goes here
 
+# update packages
+sudo apt-get update
+
 # installing oh-my-bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
 
