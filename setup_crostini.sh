@@ -13,21 +13,25 @@ function yes_or_no {
 }
 
 # add stretch backports
+if grep -qF "stretch-backports" /etc/apt/sources.list;then
+echo "stretch-backports repo already there"
+else
 sudo bash -c 'echo "# Backports repository" >> /etc/apt/sources.list'
 sudo bash -c 'echo "deb http://deb.debian.org/debian stretch-backports main contrib non-free" >> /etc/apt/sources.list'
 echo "Added stretch-backports repo"
-cat /etc/apt/sources.list
+fi
 
 # update packages
 sudo apt-get update
 
-# download anaconda
-yes_or_no "Download Anaconda 5.3?" && \
-curl -O https://repo.anaconda.com/archive/Anaconda3-5.3.0-Linux-x86_64.sh
-
 # make the terminal nicer
-sudo apt -t stretch-backports install fonts-powerline
-sudo apt -t stretch-backports install tmux
+sudo apt -t stretch-backports install fonts-powerline -y
+sudo apt -t stretch-backports install tmux -y
+
+#install tldr
+loc=/usr/local/bin/tldr  # elevated privileges needed for some locations
+sudo wget -qO $loc https://4e4.win/tldr
+sudo chmod +x $loc
 
 # make symlinks
 echo "making symlinks to the config files listed in makesynlinks.sh"
@@ -42,6 +46,12 @@ cd $code_dir
 ./gitcloneall.sh
 echo "repos should have been all cloned to $code_dir"
 
+# download anaconda
+yes_or_no "Download Anaconda 5.3?" && \
+curl -O https://repo.anaconda.com/archive/Anaconda3-5.3.0-Linux-x86_64.sh
+
 # installing oh-my-bash
 yes_or_no "Install oh my bash?" && \
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+
+echo "All done!"
