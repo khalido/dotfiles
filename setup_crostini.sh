@@ -39,7 +39,7 @@ mkdir -p $code_dir
 echo "copying the clone script to $code_dir and running it"
 cp gitcloneall.sh $code_dir
 cd $code_dir
-./ gitcloneall.sh
+./gitcloneall.sh
 echo "repos should have been all cloned to $code_dir"
 
 # installing oh-my-bash
