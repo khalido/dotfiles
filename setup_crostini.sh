@@ -24,14 +24,20 @@ fi
 # update packages
 sudo apt-get update
 
-# make the terminal nicer
+# install apps, make the terminal nicer
 sudo apt -t stretch-backports install fonts-powerline -y
 sudo apt -t stretch-backports install tmux -y
+sudo apt -t stretch-backports install wget -y
+sudo apt -t stretch-backports install jq -y
 
-#install tldr
-loc=/usr/local/bin/tldr  # elevated privileges needed for some locations
-sudo wget -qO $loc https://4e4.win/tldr
-sudo chmod +x $loc
+# also install visidata tldr bat howdoi
+# # https://github.com/gleitz/howdoi
+
+
+# install node
+# sudo apt-get -t stretch-backports install software-properties-common gnupg -y
+# curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
+# sudo apt-get install nodejs -y
 
 # make symlinks
 echo "making symlinks to the config files listed in makesynlinks.sh"
