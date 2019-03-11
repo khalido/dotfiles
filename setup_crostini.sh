@@ -41,7 +41,7 @@ echo "making symlinks to the config files listed in makesymlinks.sh"
 
 
 # download and install anaconda, nodejs10 and plotly
-if ask "Do you want to download & install Anaconda?"; then
+if ask "Do you want to download & install Anaconda & nodejs10?"; then
   curl -O https://repo.anaconda.com/archive/Anaconda3-2018.12-Linux-x86_64.sh
   bash Anaconda3-2018.12-Linux-x86_64.sh -b -p $HOME/anaconda
   echo 'export PATH="$HOME/anaconda/bin:$PATH"' >> ~/.bashrc
