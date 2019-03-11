@@ -6,9 +6,9 @@
 
 ########## Variables
 
-dir=~/dotfiles                    # dotfiles directory
-olddir=~/dotfiles_old             # old dotfiles backup directory
-files="vimrc gitconfig gitignore_global tmux.conf"    # list of files/folders to symlink in homedir
+dir = ~/dotfiles                    # dotfiles directory
+olddir = ~/dotfiles_old             # old dotfiles backup directory
+files = "vimrc gitconfig gitignore_global tmux.conf"    # list of files/folders to symlink in homedir
 
 ##########
 

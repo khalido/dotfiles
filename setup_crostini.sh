@@ -42,15 +42,15 @@ echo "making symlinks to the config files listed in makesymlinks.sh"
 
 # download and install anaconda, nodejs10 and plotly
 if ask "Do you want to download & install Anaconda?"; then
-  curl -O https://repo.anaconda.com/archive/Anaconda3-5.3.0-Linux-x86_64.sh
-  bash Anaconda3-5.3.0-Linux-x86_64.sh -b -p $HOME/anaconda
+  curl -O https://repo.anaconda.com/archive/Anaconda3-2018.12-Linux-x86_64.sh
+  bash Anaconda3-2018.12-Linux-x86_64.sh -b -p $HOME/anaconda
   echo 'export PATH="$HOME/anaconda/bin:$PATH"' >> ~/.bashrc
   source ~/.bashrc
   #conda config --add channels conda-forge
   echo "Installed Anaconda, and added to path, should be working now"
   
-  echo "Installing tldr and misc utils"
-  pip install tldr
+  #echo "Installing tldr and misc utils" # do this when needed
+  #pip install tldr
   # conda install visidata
   
   # install nodejs cause plotly
@@ -58,13 +58,13 @@ if ask "Do you want to download & install Anaconda?"; then
   sudo apt install -y nodejs
 
   # I use plotly all the time, so installing it
-  conda install -y plotly
-  export NODE_OPTIONS=--max-old-space-size=4096
-  jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build
-  jupyter labextension install plotlywidget --no-build
-  jupyter labextension install @jupyterlab/plotly-extension --no-build
-  jupyter lab build
-  unset NODE_OPTIONS
+  #conda install -c plotly plotly
+  #export NODE_OPTIONS=--max-old-space-size=4096
+  #jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build
+  #jupyter labextension install plotlywidget --no-build
+  #jupyter labextension install @jupyterlab/plotly-extension --no-build
+  #jupyter lab build
+  #unset NODE_OPTIONS
 fi
 
 echo "#####################################################################"

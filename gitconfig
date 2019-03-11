@@ -9,6 +9,8 @@
 
 [alias]
 	a = add
-	cm = commit -m 
+	cm = commit -m
+	s = status
+	p = push 
 [core]
 	excludesfile = /Users/ko/.gitignore_global
