@@ -2,6 +2,7 @@
 
 code_dir=~/code                    # all my code goes here
 
+# function to ask user yes/no
 function ask {
     while true; do
         read -p "$* [y/n]: " yn
@@ -24,11 +25,11 @@ else
 fi
 
 # update packages
-sudo apt update
+sudo apt update && sudo apt upgrade
 
 echo "#####################################################################"
 echo "Installing apps"
-sudo apt -t stretch-backports install fonts-powerline tmux wget jq curl gnupg -y
+sudo apt -t stretch-backports install fonts-powerline tmux wget jq software-properties-common curl -y
 
 curl -L "https://go.microsoft.com/fwlink/?LinkID=760868" > vscode.deb
 sudo apt install ./vscode.deb -y
