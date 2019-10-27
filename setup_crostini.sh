@@ -14,15 +14,15 @@ function ask {
 }
 
 # add stretch backports since crostini comes with stretch which has hella old packages
-echo "#####################################################################"
-echo "Adding stetch-backports repo"
-if grep -qF "stretch-backports" /etc/apt/sources.list;then
-  echo "stretch-backports repo already there"
-else
-  sudo bash -c 'echo "# Backports repository" >> /etc/apt/sources.list'
-  sudo bash -c 'echo "deb http://deb.debian.org/debian stretch-backports main contrib non-free" >> /etc/apt/sources.list'
-  echo "Added stretch-backports repo"
-fi
+#echo "#####################################################################"
+#echo "Adding stetch-backports repo"
+#if grep -qF "stretch-backports" /etc/apt/sources.list;then
+#  echo "stretch-backports repo already there"
+#else
+#  sudo bash -c 'echo "# Backports repository" >> /etc/apt/sources.list'
+#  sudo bash -c 'echo "deb http://deb.debian.org/debian stretch-backports main contrib non-free" >> /etc/apt/sources.list'
+#  echo "Added stretch-backports repo"
+#fi
 
 # update packages
 sudo apt update && sudo apt upgrade
@@ -42,8 +42,8 @@ echo "making symlinks to the config files listed in makesymlinks.sh"
 
 
 # download and install anaconda, nodejs10 and plotly
-if ask "Do you want to download & install Anaconda & nodejs10?"; then
-  curl -O https://repo.anaconda.com/archive/Anaconda3-2018.12-Linux-x86_64.sh
+if ask "Do you want to download & install Anaconda?"; then
+  curl -O https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-ppc64le.sh
   bash Anaconda3-2018.12-Linux-x86_64.sh -b -p $HOME/anaconda
   echo 'export PATH="$HOME/anaconda/bin:$PATH"' >> ~/.bashrc
   source ~/.bashrc
@@ -55,8 +55,8 @@ if ask "Do you want to download & install Anaconda & nodejs10?"; then
   # conda install visidata
   
   # install nodejs cause plotly
-  curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-  sudo apt install -y nodejs
+  #curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+  #sudo apt install -y nodejs
 
   # I use plotly all the time, so installing it
   #conda install -c plotly plotly
