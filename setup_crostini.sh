@@ -13,17 +13,6 @@ function ask {
     done
 }
 
-# add stretch backports since crostini comes with stretch which has hella old packages
-#echo "#####################################################################"
-#echo "Adding stetch-backports repo"
-#if grep -qF "stretch-backports" /etc/apt/sources.list;then
-#  echo "stretch-backports repo already there"
-#else
-#  sudo bash -c 'echo "# Backports repository" >> /etc/apt/sources.list'
-#  sudo bash -c 'echo "deb http://deb.debian.org/debian stretch-backports main contrib non-free" >> /etc/apt/sources.list'
-#  echo "Added stretch-backports repo"
-#fi
-
 # update packages
 sudo apt update && sudo apt upgrade
 
@@ -58,7 +47,7 @@ if ask "Do you want to download & install Anaconda?"; then
   #curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
   #sudo apt install -y nodejs
 
-  # I use plotly all the time, so installing it
+  # plotly
   #conda install -c plotly plotly
   #export NODE_OPTIONS=--max-old-space-size=4096
   #jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build
@@ -81,7 +70,6 @@ if ask "Do you want to download all repos into ~/code?"; then
   ./gitcloneall.sh
   echo "repos should have been all cloned to $code_dir if yes"
 fi
-
 
 # installing oh-my-bash
 ask "Install oh my bash?" && \
