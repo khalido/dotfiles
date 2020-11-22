@@ -25,5 +25,9 @@ Plug 'davidhalter/jedi-vim'
 
 " find a markdown plugin 
 
+" search using fzf
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
 " Initialize plugin system
 call plug#end()
