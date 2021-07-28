@@ -2,6 +2,10 @@
 #
 # script for setting up a new mac
 
+# helper functions
+function already_installed {
+    echo "Already installed: $1"
+}
 
 # Ask for the administrator password upfront.
 sudo -v
@@ -28,62 +32,114 @@ fi
 echo "Updating homebrew..."
 brew update
 
-echo "Installing Git..."
-brew install git
+# Install cli apps using brew
+###############################################################################
+echo "Updating cli apps using brew..."
+apps=(
+    bat
+    git
+    fnm
+    vim
+    httpie
+    fd
+    fzf
+    jq
+    tree
+    tldr
+    htop
+    neofetch
+)
 
-echo "Git config"
+BREW_LIST=$(brew list)
 
-git config --global user.name "khalido"
-git config --global user.email Khalid.omar@gmail.com
+for i in "${apps[@]}"
+do
+  echo $BREW_LIST | grep $i &>/dev/null
+  if [[ $? != 0 ]] ; then
+    brew install $i
+  else
+    already_installed $i
+  fi
+done
 
+# Install apps using brew (brew calls them casks for some weird reason)
+###############################################################################
+echo "installing gui apps using brew case..."
+apps=(
+    # essential utils
+    raycast
+    karabiner-elements
+    itsycal
+    
+    # web
+    cyberduck
+    transmission
+    firefox
+    google-chrome
+    google-drive
+    
+    # writing apps
+    obsidian
+    nota
+    notion
+    
+    # coding
+    visual-studio-code
+    ngrok
+    iterm2
+    tabby
+    github
+    
+    # talk to ppl
+    whatsapp
+    microsoft-teams
+    zoom
+    
+    # misc stuff
+    kindle
+    vlc
+    spotify
+    steam
+    
+    # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
+    qlmarkdown
+    qlcolorcode
+    quicklook-csv
+    qlstephen
+)
 
+BREW_LIST=$(brew list)
 
+for i in "${apps[@]}"
+do
+  echo $BREW_LIST | grep $i &>/dev/null
+  if [[ $? != 0 ]] ; then
+    brew install --cask $i
+  else
+    already_installed $i
+  fi
+done
 
 echo "Cleaning up brew"
 brew cleanup
 
-
+# dotfiles
+###############################################################################
+echo ""
 echo "Copying dotfiles from Github"
 cd ~
 git clone https://github.com/khalido/dotfiles.git
 cd dotfiles
 sh makesymlinks.sh
+cd ~
 
 # Create a directory where code will live
 mkdir -p ~/Code
 
 #Install Zsh & Oh My Zsh
 echo "Installing Oh My ZSH..."
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-
-# Apps
-apps=(
-  cleanmymac
-  filezilla
-  firefox
-  google-chrome
-  mou
-  steam
-  spotify
-  iterm2
-  virtualbox
-  vlc
-  transmission
-  zoomus
-  qlmarkdown
-  qlstephen
-  suspicious-package
-)
-
-# Install apps to /Applications
-# Default is: /Users/$user/Applications
-echo "installing apps with Cask..."
-brew cask install --appdir="/Applications" ${apps[@]}
-
-
-brew cask cleanup
-brew cleanup
 
 # clean this into sensible sections
 echo ""
@@ -112,29 +168,11 @@ defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 #"Enabling full keyboard access for all controls (e.g. enable Tab in modal dialogs)"
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
-#"Setting trackpad & mouse speed to a reasonable number"
-defaults write -g com.apple.trackpad.scaling 2
-defaults write -g com.apple.mouse.scaling 2.5
-
 #"Enabling subpixel font rendering on non-Apple LCDs"
 defaults write NSGlobalDomain AppleFontSmoothing -int 2
 
-#"Speeding up Mission Control animations and grouping windows by application"
-defaults write com.apple.dock expose-animation-duration -float 0.1
-defaults write com.apple.dock "expose-group-by-app" -bool true
-
-#"Setting Dock to auto-hide and lowering the auto-hiding delay from 0.5"
-defaults write com.apple.dock autohide -bool true
-defaults write com.apple.dock autohide-delay -float 0.2
-defaults write com.apple.dock autohide-time-modifier -float 0.3
-
 #"Setting email addresses to copy as 'foo@example.com' instead of 'Foo Bar <foo@example.com>' in Mail.app"
 defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
-
-#"Enabling UTF-8 ONLY in Terminal.app and setting the Pro theme by default"
-defaults write com.apple.terminal StringEncodings -array 4
-defaults write com.apple.Terminal "Default Window Settings" -string "Pro"
-defaults write com.apple.Terminal "Startup Window Settings" -string "Pro"
 
 #"Preventing Time Machine from prompting to use new hard drives as backup volume"
 defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
@@ -143,7 +181,30 @@ defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 # http://www.cultofmac.com/221392/quick-hack-speeds-up-retina-macbooks-wake-from-sleep-os-x-tips/
 sudo pmset -a standbydelay 14400
 
+# Terminal
 ###############################################################################
+
+#"Enabling UTF-8 ONLY in Terminal.app and setting the Pro theme by default"
+defaults write com.apple.terminal StringEncodings -array 4
+defaults write com.apple.Terminal "Default Window Settings" -string "Pro"
+defaults write com.apple.Terminal "Startup Window Settings" -string "Pro"
+
+# Trackpad, mouse, keyboard
+###############################################################################
+
+#"Setting trackpad & mouse speed to a reasonable number"
+defaults write -g com.apple.trackpad.scaling 2
+defaults write -g com.apple.mouse.scaling 2.5
+
+# Enable tap to click (Trackpad) for this user and for the login screen
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+
+# enable three finger drag
+defaults -currentHost write NSGlobalDomain com.apple.trackpad.threeFingerSwipeGesture -int 1
+defaults write NSGlobalDomain com.apple.trackpad.threeFingerSwipeGesture -int 1
+
 # Finder
 ###############################################################################
 
@@ -178,8 +239,20 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 
+# Dock & Mission Control
+###############################################################################
+
 #"Setting the icon size of Dock items to 36 pixels for optimal size/screen-realestate"
 defaults write com.apple.dock tilesize -int 36
+
+#"Speeding up Mission Control animations and grouping windows by application"
+defaults write com.apple.dock expose-animation-duration -float 0.1
+defaults write com.apple.dock "expose-group-by-app" -bool true
+
+#"Setting Dock to auto-hide and lowering the auto-hiding delay from 0.5"
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide-delay -float 0.2
+defaults write com.apple.dock autohide-time-modifier -float 0.3
 
 ###############################################################################
 # Transmission
