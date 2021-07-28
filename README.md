@@ -14,29 +14,45 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/se
 Installs essential apps using [brew](https://brew.sh).
 Tweaks some settings, a nice guide here: https://macos-defaults.com
 
-**28 July, 2021:** it worked!
+Note: Everything is in one big script so the above command works.
 
-## old stuff, clean up
+### setup hyper key
 
-1. Clone this repo in the homedir:
+In karabiner-elements, import this rule from internet: `Change caps_lock key (rev 5)`
 
-```bash
-git clone https://github.com/khalido/dotfiles.git
+Select the modification: `Change caps_lock key to command+control+option+shift. (Post f19 key when pressed alone)`.
+
+Now set capslock as the raycast shortcut key, and capslock + some key as triggers for various stuff.
+
+e.g I currently have:
+
+```
+hyper        : opens raycast
+
+# window stuff
+hyper + [    : window fill left half 
+hyper + ]    : window fill right half
+hyper + M    : maximize
+hyper + up   : max height
+hyper + down : max width 
+
+# misc useful things
+hyper + L : lock screen
 ```
 
-2. Make symlinks to all the dotfiles:
+Now I run the error of forgetting all the mac shortcuts, but the advantage is that these are somewhat similar to chromeos shortcuts.
 
-```bash
-./makesymlinks.sh
-```
+## Notes
 
-3. Clone all my repos (only does up to 200 repos) - but copy this script into a `~/code` and run there:
+if a shell script doesn't execute: `sudo chmod +x mac_settings.sh`
+
+
+# dev setup 
+
+## clone all my public repos
+
+Clone all my repos (only does up to 200 repos) - but copy this script into a `~/code` and run there:
 
 ```bash
 ./gitcloneall.sh khalido
 ```
-
-
-### todos:
-
-- script download and install current version of anaconda

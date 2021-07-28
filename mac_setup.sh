@@ -99,7 +99,8 @@ apps=(
     kindle
     vlc
     spotify
-    steam
+    #steam
+    balenaetcher
     
     # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
     qlmarkdown
@@ -134,14 +135,15 @@ sh makesymlinks.sh
 cd ~
 
 # Create a directory where code will live
-mkdir -p ~/Code
-
-#Install Zsh & Oh My Zsh
-echo "Installing Oh My ZSH..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+mkdir -p ~/code
 
 
-# clean this into sensible sections
+###############################################################################
+# configure mac settings into sensible defaults
+###############################################################################
+
+# see https://macos-defaults.com/ for explanations and ideas
+
 echo ""
 echo "Setting some Mac settings..."
 
@@ -274,8 +276,10 @@ defaults write org.m0k.transmission WarningDonate -bool false
 #"Hide the legal disclaimer"
 defaults write org.m0k.transmission WarningLegal -bool false
 
-
 killall Finder
 
+echo "Setup almost finished!"
 
-echo "Done!"
+#Install Zsh & Oh My Zsh
+echo "Installing Oh My ZSH..."
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"

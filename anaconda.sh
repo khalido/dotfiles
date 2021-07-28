@@ -1,4 +1,6 @@
 
+# one liner to install install anaconda 
+# https://github.com/mxbi/shell_scripts
 #curl -L conda.ml | bash
 
 curl -O https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-ppc64le.sh
