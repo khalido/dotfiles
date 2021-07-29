@@ -38,7 +38,6 @@ echo "Updating cli apps using brew..."
 apps=(
     bat
     git
-    fnm
     vim
     httpie
     fd
@@ -48,6 +47,10 @@ apps=(
     tldr
     htop
     neofetch
+    # mac specific stuff
+    mas
+    # fnm is a node installer, see nvm also
+    fnm
 )
 
 BREW_LIST=$(brew list)
@@ -89,6 +92,8 @@ apps=(
     iterm2
     tabby
     github
+    # run this after: conda init "$(basename "${SHELL}")"
+    #mambaforge
     
     # talk to ppl
     whatsapp
