@@ -4,6 +4,13 @@
 # ko
 .secret     # where I save my api keys (yes its not the best idea)
 
+# node #
+########
+node_modules
+npm-debug.log
+.svelte-kit
+.vercel_build_output
+
 # OS generated files #
 ######################
 .DS_Store

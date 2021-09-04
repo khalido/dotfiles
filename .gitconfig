@@ -1,5 +1,5 @@
 [user]
-	name = Khalid Omar
+	name = khalido
 	username = khalido
 	email = khalid.omar@gmail.com
 
@@ -13,7 +13,7 @@
 	s = status
 	p = push 
 [core]
-	excludesfile = /Users/ko/.gitignore_global
+	excludesfile = ~/.gitignore_global
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

@@ -1,3 +1,5 @@
+# this is old, probably not worth using anymore
+
 #!/bin/bash
 
 code_dir=~/code                    # all my code goes here

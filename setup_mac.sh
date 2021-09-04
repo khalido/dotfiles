@@ -49,8 +49,8 @@ apps=(
     neofetch
     # mac specific stuff
     mas
-    # fnm is a node installer, see nvm also
-    fnm
+    # consider fnm or nvm instead
+    node
 )
 
 BREW_LIST=$(brew list)
@@ -67,7 +67,7 @@ done
 
 # Install apps using brew (brew calls them casks for some weird reason)
 ###############################################################################
-echo "installing gui apps using brew case..."
+echo "installing gui apps using brew cask..."
 apps=(
     # essential utils
     raycast
@@ -80,6 +80,7 @@ apps=(
     firefox
     google-chrome
     google-drive
+    netnewswire
     
     # writing apps
     obsidian
@@ -128,6 +129,14 @@ done
 
 echo "Cleaning up brew"
 brew cleanup
+
+# Mac app store apps
+###############################################################################
+echo "Install Mac App Store apps"
+
+mas install 1278508951 # Trello
+mas install 1274495053 # Microsoft To Do
+mas install 937984704 # Amphetamine
 
 # dotfiles
 ###############################################################################

@@ -2,7 +2,6 @@
 
 basic config files for all the things as I learn more linuxy things. There are many super duper all singing and dancing setups out there, this one is done by me so I can understand whats going on.
 
-
 ## setup mac from scratch
 
 Execute by:
@@ -13,6 +12,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/se
 
 Installs essential apps using [brew](https://brew.sh).
 Tweaks some settings, a nice guide here: https://macos-defaults.com
+
+Shoutout to all the mac setup scripts on github, from which most of the stuff here comes from.
 
 Note: Everything is in one big script so the above command works.
 
@@ -30,11 +31,11 @@ e.g I currently have:
 hyper        : opens raycast
 
 # window stuff
-hyper + [    : window fill left half 
+hyper + [    : window fill left half
 hyper + ]    : window fill right half
 hyper + M    : maximize
 hyper + up   : max height
-hyper + down : max width 
+hyper + down : max width
 
 # misc useful things
 hyper + L : lock screen
@@ -46,8 +47,7 @@ Now I run the error of forgetting all the mac shortcuts, but the advantage is th
 
 if a shell script doesn't execute: `sudo chmod +x mac_settings.sh`
 
-
-# dev setup 
+# dev setup
 
 ## clone all my public repos
 
