@@ -2,6 +2,11 @@
 
 basic config files for all the things as I learn more linuxy things. There are many super duper all singing and dancing setups out there, this one is done by me so I can understand whats going on.
 
+this repo:
+
+1. Provides dotfiles to [personalize](https://github.com/khalido/dotfiles.git) github codespaces and other linux machines
+2. script to setup computers - so far mac.
+
 ## setup mac from scratch
 
 Execute by:
