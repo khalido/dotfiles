@@ -20,7 +20,7 @@ sudo apt update && sudo apt upgrade
 
 echo "#####################################################################"
 echo "Installing apps"
-sudo apt -t stretch-backports install fonts-powerline tmux wget jq software-properties-common curl -y
+#sudo apt install fonts-powerline software-properties-common curl -y
 
 curl -L "https://go.microsoft.com/fwlink/?LinkID=760868" > vscode.deb
 sudo apt install ./vscode.deb -y
@@ -32,6 +32,11 @@ echo "making symlinks to the config files listed in makesymlinks.sh"
 ./makesymlinks.sh
 
 
+# install brew, cause why not
+if ask "install homebrew?"; then
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
 # download and install anaconda, nodejs10 and plotly
 if ask "Do you want to download & install Miniconda?"; then
   curl -O <https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh>
@@ -42,18 +47,12 @@ if ask "Do you want to download & install Miniconda?"; then
   #pip install tldr
   # conda install visidata
   
-  # install nodejs cause plotly
-  #curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+  # install nvm to later install node
+  #curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+  # or install node directly directly
+  #curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
   #sudo apt install -y nodejs
 
-  # plotly
-  #conda install -c plotly plotly
-  #export NODE_OPTIONS=--max-old-space-size=4096
-  #jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build
-  #jupyter labextension install plotlywidget --no-build
-  #jupyter labextension install @jupyterlab/plotly-extension --no-build
-  #jupyter lab build
-  #unset NODE_OPTIONS
 fi
 
 echo "#####################################################################"
