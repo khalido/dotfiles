@@ -7,9 +7,14 @@ this repo:
 1. Provides dotfiles to [personalize](https://github.com/khalido/dotfiles.git) github codespaces and other linux machines
 2. script to setup computers - so far mac.
 
-## setup mac from scratch
+## setup chromeos from scratch
 
-Execute by:
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/setup_chromeos.sh)"
+```
+(work in progress)
+
+## setup mac
 
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/setup_mac.sh)"
@@ -47,6 +52,7 @@ hyper + L : lock screen
 ```
 
 Now I run the error of forgetting all the mac shortcuts, but the advantage is that these are somewhat similar to chromeos shortcuts.
+
 
 ## Notes
 
