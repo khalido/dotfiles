@@ -91,6 +91,7 @@ volta install node@16
 
 echo "Installing global cli tools using npm"
 npm install -g tldr
+npm i -g vercel
 
 header "Optional stuff left for the end"
 
