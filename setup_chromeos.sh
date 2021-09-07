@@ -78,6 +78,10 @@ header "Installing dev stuff: node, mambaforge"
 echo "Installing Mambaforge for conda envs in vscode"
 curl -L -O https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh
 bash Mambaforge-$(uname)-$(uname -m).sh -b
+# add conda mamba to bash shell
+# only works for bash shell, change when chromeos switches to zsh
+eval "$(~/mambaforge/bin/conda shell.bash hook)"
+conda init
 
 # install volta and node
 echo "Installing Volta"
