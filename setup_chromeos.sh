@@ -35,7 +35,7 @@ header "Installing apt stuff"
 
 # update packages
 echo "Updating packages using apt"
-sudo apt update && sudo apt upgrade -y
+sudo apt update --allow-releaseinfo-change && sudo apt upgrade -y
 # consider build-essential if needed
 sudo apt install gnome-keyring fonts-powerline software-properties-common -y
 
@@ -77,7 +77,7 @@ header "Installing dev stuff: node, mambaforge"
 
 echo "Installing Mambaforge for conda envs in vscode"
 curl -L -O https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh
-bash Mambaforge-$(uname)-$(uname -m).sh
+bash Mambaforge-$(uname)-$(uname -m).sh -b
 
 # install volta and node
 echo "Installing Volta"
@@ -86,7 +86,8 @@ echo "Installing Volta"
 
 echo "Installing volta and latest node"
 curl https://get.volta.sh | bash
-volta install node
+source ~/.bashrc
+volta install node@16
 
 echo "Installing global cli tools using npm"
 npm install -g tldr
@@ -104,8 +105,8 @@ if ask "Do you want to download all repos into ~/code?"; then
   echo "Creating $code_dir in which to git clone all the repos"
   mkdir -p $code_dir
   echo "copying the clone script to $code_dir and running it"
-  cp gitcloneall.sh $code_dir
-  cd $code_dir
+  cp ~/dotfiles/gitcloneall.sh ~/$code_dir
+  cd ~/$code_dir
   ./gitcloneall.sh
   echo "repos should have been all cloned to $code_dir if yes"
 fi
