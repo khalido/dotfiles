@@ -21,9 +21,6 @@ cd dotfiles
 sh makesymlinks.sh
 cd ~
 
-# Create a directory where code will live
-mkdir -p ~/code
-
 # list version
 echo "\nDebian Version"
 echo "##############################################################"
@@ -32,21 +29,19 @@ cat /etc/os-release
 echo "\nInstalling apt stuff"
 echo "##############################################################"
 
-# add testing repo else packages too old
-# not using as it updates way too many things so left for future use
-# if grep -qF "testing" /etc/apt/sources.list;then
-#   echo "testing repo already there"
-# else
-#   sudo bash -c 'echo "# test repository" >> /etc/apt/sources.list'
-#   sudo bash -c 'echo "deb http://http.us.debian.org/debian/ testing non-free contrib main" >> /etc/apt/sources.list'
-# fi
-
 # update packages
 echo "Updating packages using apt"
 sudo apt update && sudo apt upgrade -y
 # consider build-essential if needed
 sudo apt install gnome-keyring fonts-powerline software-properties-common -y
 
+# add backports to sources.list else packages too old
+# if grep -qF "-backports" /etc/apt/sources.list;then
+#   echo "backports repo already there"
+# else
+#   sudo bash -c 'echo "# backports repository" >> /etc/apt/sources.list'
+#   sudo bash -c 'echo "deb https://deb.debian.org/debian buster-backports main contrib non-free" >> /etc/apt/sources.list'
+# fi
 
 echo "\nInstall latest .deb versions of cli apps"
 echo "##############################################################"
