@@ -13,21 +13,25 @@ function ask {
     done
 }
 
-echo "\nCloning dotfiles from Github"
-echo "##############################################################"
+function header {
+        echo -e "\n"
+        for i in "$*"; do echo "$i"; done;
+        echo "#########################################"
+}
+
+header "Cloning dotfiles from Github"
 cd ~
 git clone https://github.com/khalido/dotfiles.git
+echo "making symlinks to the config files listed in makesymlinks.sh"
 cd dotfiles
 sh makesymlinks.sh
 cd ~
 
 # list version
-echo "\nDebian Version"
-echo "##############################################################"
+header "Debian Version"
 cat /etc/os-release
 
-echo "\nInstalling apt stuff"
-echo "##############################################################"
+header "Installing apt stuff"
 
 # update packages
 echo "Updating packages using apt"
@@ -43,8 +47,7 @@ sudo apt install gnome-keyring fonts-powerline software-properties-common -y
 #   sudo bash -c 'echo "deb https://deb.debian.org/debian buster-backports main contrib non-free" >> /etc/apt/sources.list'
 # fi
 
-echo "\nInstall latest .deb versions of cli apps"
-echo "##############################################################"
+header "Install latest .deb versions of cli apps"
 
 # grab latest amd64 deb url
 URL=$(curl -L -s https://api.github.com/repos/sharkdp/bat/releases/latest | grep -o -E "https://(.*)bat-musl_(.*)_amd64.deb")
@@ -52,8 +55,7 @@ curl -L $URL > bat.deb
 sudo apt install ./bat.deb -y
 rm bat.deb
 
-echo "\nInstall gui apps"
-echo "##############################################################"
+header "Install gui apps"
 
 echo "Installing vs code"
 curl -L "https://go.microsoft.com/fwlink/?LinkID=760868" > vscode.deb
@@ -67,14 +69,7 @@ curl -L $URL > obsidian.deb
 sudo apt install ./obsidian.deb -y
 rm obsidian.deb
 
-
-# make symlinks
-echo "making symlinks to the config files listed in makesymlinks.sh"
-./makesymlinks.sh
-
-
-echo "\nInstalling dev stuff: node, mambaforge"
-echo "##############################################################"
+header "Installing dev stuff: node, mambaforge"
 
 # echo "Installing pipx for global python tools"
 # python3 -m pip install --user pipx
@@ -96,8 +91,7 @@ volta install node
 echo "Installing global cli tools using npm"
 npm install -g tldr
 
-echo "\nOptional stuff left for the end"
-echo "##############################################################"
+header "Optional stuff left for the end"
 
 # install brew, cause why not
 if ask "install homebrew?"; then
@@ -116,6 +110,5 @@ if ask "Do you want to download all repos into ~/code?"; then
   echo "repos should have been all cloned to $code_dir if yes"
 fi
 
-
 # check if it makes it here after
-echo "\nAll Done!"
+header "All Done!"

@@ -10,7 +10,7 @@ this repo:
 ## setup chromeos from scratch
 
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/setup_chromeos.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/setup_chromeos.sh)"
 ```
 (work in progress)
 
