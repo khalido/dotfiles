@@ -36,20 +36,21 @@ header "Installing apt stuff"
 # update packages
 echo "Updating packages using apt"
 sudo apt update --allow-releaseinfo-change && sudo apt upgrade -y
-# consider build-essential if needed
-sudo apt install gnome-keyring fonts-powerline software-properties-common -y
+
+# install essentials
+sudo apt install gnome-keyring fonts-powerline software-properties-common build-essential -y
 
 # add backports to sources.list else packages too old
 # if grep -qF "-backports" /etc/apt/sources.list;then
 #   echo "backports repo already there"
 # else
 #   sudo bash -c 'echo "# backports repository" >> /etc/apt/sources.list'
-#   sudo bash -c 'echo "deb https://deb.debian.org/debian buster-backports main contrib non-free" >> /etc/apt/sources.list'
+#   sudo bash -c 'echo "deb http://deb.debian.org/debian bullseye-backports main contrib non-free" >> /etc/apt/sources.list'
 # fi
 
 header "Install latest .deb versions of cli apps"
 
-# grab latest amd64 deb url
+# grab latest amd64 deb url for bat
 URL=$(curl -L -s https://api.github.com/repos/sharkdp/bat/releases/latest | grep -o -E "https://(.*)bat-musl_(.*)_amd64.deb")
 curl -L $URL > bat.deb
 sudo apt install ./bat.deb -y
@@ -83,26 +84,20 @@ bash Mambaforge-$(uname)-$(uname -m).sh -b
 eval "$(~/mambaforge/bin/conda shell.bash hook)"
 conda init
 
-# install volta and node
-echo "Installing Volta"
-#curl -fsSL https://fnm.vercel.app/install | bash
-#fnm install 16.x
+mamba create -n py39 python=3.9 matplotlib pandas seaborn jupyterlab black isort mako markdown pyyaml pymdown-extensions jupyterlab_code_formatter -y
+mamba create -n streamlit python=3.9 streamlit matplotlib pandas numpy black isort -y
 
-echo "Installing volta and latest node"
+# install volta and node
+echo "Installing Volta.sh and Node 17"
 curl https://get.volta.sh | bash
 source ~/.bashrc
-volta install node@16
+volta install node@17
 
 echo "Installing global cli tools using npm"
 npm install -g tldr
 npm i -g vercel
 
 header "Optional stuff left for the end"
-
-# install brew, cause why not
-if ask "install homebrew?"; then
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
 
 if ask "Do you want to download all repos into ~/code?"; then
   echo "downloading all my public git repos"
@@ -116,5 +111,10 @@ if ask "Do you want to download all repos into ~/code?"; then
   echo "repos should have been all cloned to $code_dir if yes"
 fi
 
-# check if it makes it here after
+# install brew, cause why not
+if ask "install homebrew?"; then
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# check if it makes it here after all the above
 header "All Done!"
