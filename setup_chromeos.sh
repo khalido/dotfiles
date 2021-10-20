@@ -65,7 +65,7 @@ rm vscode.deb
 
 echo "Insalling Obsidian"
 # grab latest amd64 deb url
-URL=$(curl -L -s https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest | grep -o -E "https://(.*)obsidian_(.*)_amd64.deb")
+URL=$(curl -L -s https://api.github.com/repos/obsidianmd/obsidian-releases/releases | grep -o -E "https://(.*)obsidian_(.*)_amd64.deb")
 curl -L $URL > obsidian.deb
 sudo apt install ./obsidian.deb -y
 rm obsidian.deb
@@ -105,8 +105,8 @@ if ask "Do you want to download all repos into ~/code?"; then
   echo "Creating $code_dir in which to git clone all the repos"
   mkdir -p $code_dir
   echo "copying the clone script to $code_dir and running it"
-  cp ~/dotfiles/gitcloneall.sh ~/$code_dir
-  cd ~/$code_dir
+  cp ~/dotfiles/gitcloneall.sh $code_dir
+  cd $code_dir
   ./gitcloneall.sh
   echo "repos should have been all cloned to $code_dir if yes"
 fi

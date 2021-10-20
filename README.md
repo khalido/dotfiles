@@ -5,14 +5,20 @@ basic config files for all the things as I learn more linuxy things. There are m
 this repo:
 
 1. Provides dotfiles to [personalize](https://github.com/khalido/dotfiles.git) github codespaces and other linux machines
-2. script to setup computers - so far mac.
+2. script to setup computers - so far mac and chromeos
 
 ## setup chromeos from scratch
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/setup_chromeos.sh)"
 ```
-(work in progress)
+
+This installs 
+
+- cli: bat 
+- gui: vscode, obsidian
+- mambaforge with a py39 and streamlit env
+- volta and node 17
 
 ## setup mac
 
