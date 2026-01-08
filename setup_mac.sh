@@ -1,299 +1,204 @@
 #!/usr/bin/env bash
 #
-# script for setting up a new mac
+# Setup script for a new Mac
+# Run: curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/main/setup_mac.sh | bash
+# Or:  bash setup_mac.sh
 
-# helper functions
-function already_installed {
-    echo "Already installed: $1"
+set -e
+
+header() {
+    echo ""
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "  $1"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 }
 
-# Ask for the administrator password upfront.
+header "Mac Setup Script"
+
+# Ask for sudo upfront
 sudo -v
 
-# Keep-alive: update existing `sudo` time stamp until the script has finished.
-while true; do
-    sudo -n true
-    sleep 60
-    kill -0 "$$" || exit
-done 2>/dev/null &
+# Keep sudo alive
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+header "Xcode CLI Tools"
+xcode-select --install 2>/dev/null || echo "Already installed"
 
-# need this for cli tools
-echo "Installing xcode"
-xcode-select --install
-
-# Check for Homebrew, and install if we don't have it
-if test ! $(which brew); then
-  echo "Installing homebrew..."
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+header "Homebrew"
+if ! command -v brew &>/dev/null; then
+    echo "Installing..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    if [[ -f /opt/homebrew/bin/brew ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+else
+    echo "Already installed"
 fi
-
-# Update homebrew recipes
-echo "Updating homebrew..."
 brew update
 
-# Install cli apps using brew
-###############################################################################
-echo "Updating cli apps using brew..."
-apps=(
-    bat
+header "uv (Python)"
+if ! command -v uv &>/dev/null; then
+    echo "Installing..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    # Add to path for this session
+    export PATH="$HOME/.local/bin:$PATH"
+else
+    echo "Already installed"
+fi
+
+header "CLI Tools"
+cli_apps=(
+    # Core utils
+    bat         # better cat with syntax highlighting
+    eza         # modern ls with colors/icons
+    ripgrep     # fast grep replacement
+    fzf         # fuzzy finder for everything
+    fd          # fast find replacement
+    jq          # JSON processor
+    tree        # directory tree view
+
+    # Dev tools
     git
-    vim
-    httpie
-    fd
-    fzf
-    jq
-    tree
-    tldr
-    htop
-    neofetch
-    # mac specific stuff
-    mas
-    # consider fnm or nvm instead
-    node
+    gh          # GitHub CLI for PRs/issues
+    fnm         # fast Node.js version manager
+
+    # AI tools
+    gemini-cli  # Google Gemini in terminal
+
+    # Nice to have
+    tlrc        # tldr pages, concise man pages
 )
 
-BREW_LIST=$(brew list)
-
-for i in "${apps[@]}"
-do
-  echo $BREW_LIST | grep $i &>/dev/null
-  if [[ $? != 0 ]] ; then
-    brew install $i
-  else
-    already_installed $i
-  fi
+for app in "${cli_apps[@]}"; do
+    brew install "$app" 2>/dev/null || echo "  $app: already installed"
 done
 
-# Install apps using brew (brew calls them casks for some weird reason)
-###############################################################################
-echo "installing gui apps using brew cask..."
-apps=(
-    # essential utils
+# OpenCode (AI coding assistant)
+brew tap anomalyco/tap 2>/dev/null || true
+brew install anomalyco/tap/opencode 2>/dev/null || echo "  opencode: already installed"
+
+header "Python Tools (via uv)"
+uv tool install ruff@latest 2>/dev/null || echo "  ruff: already installed"
+
+header "Node.js (via fnm)"
+if [[ -f ~/code/dotfiles/fnm.py ]]; then
+    uv run ~/code/dotfiles/fnm.py install --yes
+else
+    # Fallback if dotfiles not cloned yet
+    eval "$(fnm env)"
+    fnm install --lts
+    fnm default lts-latest
+fi
+
+header "Essential Apps"
+essential_apps=(
+    # Launcher (also handles hyperkey + window management)
     raycast
-    karabiner-elements
-    itsycal
-    
-    # web
-    cyberduck
-    transmission
+
+    # Browsers
     firefox
     google-chrome
-    google-drive
-    netnewswire
-    
-    # writing apps
-    obsidian
-    nota
-    notion
-    
-    # coding
+
+    # Coding
     visual-studio-code
-    ngrok
-    iterm2
-    tabby
-    github
-    # run this after: conda init "$(basename "${SHELL}")"
-    #mambaforge
-    
-    # talk to ppl
-    whatsapp
-    microsoft-teams
-    zoom
-    
-    # misc stuff
-    kindle
-    vlc
-    spotify
-    #steam
-    balenaetcher
-    
-    # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
-    qlmarkdown
-    qlcolorcode
-    quicklook-csv
-    qlstephen
+    zed
+    ghostty
+    claude
+    claude-code
+
+    # Dev tools
+    orbstack        # Docker/VMs, fast & light
+
+    # Utilities
+    monitorcontrol  # external monitor brightness/volume
+
+    # Notes
+    obsidian
 )
 
-BREW_LIST=$(brew list)
+# Manual installs (no brew cask):
+# - Chorus (Git client): https://chorus.sh/download
 
-for i in "${apps[@]}"
-do
-  echo $BREW_LIST | grep $i &>/dev/null
-  if [[ $? != 0 ]] ; then
-    brew install --cask $i
-  else
-    already_installed $i
-  fi
+for app in "${essential_apps[@]}"; do
+    brew install --cask "$app" 2>/dev/null || echo "  $app: already installed"
 done
 
-echo "Cleaning up brew"
+header "Optional Apps"
+optional_apps=(
+    iina            # elegant media player
+    spotify         # music streaming
+    transmission    # torrent client
+    keka            # file archiver
+)
+
+for app in "${optional_apps[@]}"; do
+    brew install --cask "$app" 2>/dev/null || echo "  $app: already installed"
+done
+
 brew cleanup
 
-# Mac app store apps
-###############################################################################
-echo "Install Mac App Store apps"
-
-mas install 1278508951 # Trello
-mas install 1274495053 # Microsoft To Do
-mas install 937984704 # Amphetamine
-
-# dotfiles
-###############################################################################
-echo ""
-echo "Copying dotfiles from Github"
-cd ~
-git clone https://github.com/khalido/dotfiles.git
-cd dotfiles
-sh makesymlinks.sh
-cd ~
-
-# Create a directory where code will live
+header "Dotfiles"
 mkdir -p ~/code
+if [[ ! -d ~/code/dotfiles ]]; then
+    echo "Cloning dotfiles..."
+    git clone https://github.com/khalido/dotfiles ~/code/dotfiles
+else
+    echo "Already cloned"
+fi
 
+# Setup Claude Code symlinks
+if [[ -f ~/code/dotfiles/claude/setup.py ]]; then
+    echo "Setting up Claude Code config..."
+    uv run ~/code/dotfiles/claude/setup.py
+fi
 
-###############################################################################
-# configure mac settings into sensible defaults
-###############################################################################
+header "macOS Settings"
 
-# see https://macos-defaults.com/ for explanations and ideas
-
-echo ""
-echo "Setting some Mac settings..."
-
-# General UI/UX
-###############################################################################
-
-# Require password as soon as screensaver or sleep mode starts
+# Password after sleep
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
-#"Allow text selection in Quick Look"
-defaults write com.apple.finder QLEnableTextSelection -bool TRUE
-
-#"Disabling OS X Gate Keeper"
-#"(You'll be able to install any app you want from here on, not just Mac App Store apps)"
-sudo spctl --master-disable
-sudo defaults write /var/db/SystemPolicy-prefs.plist enabled -string no
-defaults write com.apple.LaunchServices LSQuarantine -bool false
-
-#"Disable smart quotes and smart dashes as they are annoying when typing code"
+# Disable smart quotes/dashes (annoying for code)
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 
-#"Enabling full keyboard access for all controls (e.g. enable Tab in modal dialogs)"
+# Full keyboard access
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
-#"Enabling subpixel font rendering on non-Apple LCDs"
-defaults write NSGlobalDomain AppleFontSmoothing -int 2
-
-#"Setting email addresses to copy as 'foo@example.com' instead of 'Foo Bar <foo@example.com>' in Mail.app"
-defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
-
-#"Preventing Time Machine from prompting to use new hard drives as backup volume"
-defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
-
-#"Speeding up wake from sleep to 4 hours from an hour"
-# http://www.cultofmac.com/221392/quick-hack-speeds-up-retina-macbooks-wake-from-sleep-os-x-tips/
-sudo pmset -a standbydelay 14400
-
-# Terminal
-###############################################################################
-
-#"Enabling UTF-8 ONLY in Terminal.app and setting the Pro theme by default"
-defaults write com.apple.terminal StringEncodings -array 4
-defaults write com.apple.Terminal "Default Window Settings" -string "Pro"
-defaults write com.apple.Terminal "Startup Window Settings" -string "Pro"
-
-# Trackpad, mouse, keyboard
-###############################################################################
-
-#"Setting trackpad & mouse speed to a reasonable number"
-defaults write -g com.apple.trackpad.scaling 2
-defaults write -g com.apple.mouse.scaling 2.5
-
-# Enable tap to click (Trackpad) for this user and for the login screen
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
-defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
-defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
-
-# enable three finger drag
-defaults -currentHost write NSGlobalDomain com.apple.trackpad.threeFingerSwipeGesture -int 1
-defaults write NSGlobalDomain com.apple.trackpad.threeFingerSwipeGesture -int 1
-
-# Finder
-###############################################################################
-
-#"Expanding the save panel by default"
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
-defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
-defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
-
-#"Setting screenshots location to ~/Desktop"
-defaults write com.apple.screencapture location -string "$HOME/Desktop"
-
-#"Setting screenshot format to PNG"
-defaults write com.apple.screencapture type -string "png"
-
-#"Showing icons for hard drives, servers, and removable media on the desktop"
-defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-
-#"Showing all filename extensions in Finder by default"
+# Show all file extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
-#"Disabling the warning when changing a file extension"
+# Disable extension change warning
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
-#"Use column view in all Finder windows by default"
+# Column view in Finder
 defaults write com.apple.finder FXPreferredViewStyle Clmv
 
-#"Avoiding the creation of .DS_Store files on network volumes"
+# Don't create .DS_Store on network volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 
-#"Enabling snap-to-grid for icons on the desktop and in other icon views"
-/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
-
-# Dock & Mission Control
-###############################################################################
-
-#"Setting the icon size of Dock items to 36 pixels for optimal size/screen-realestate"
+# Dock: auto-hide, smaller icons
 defaults write com.apple.dock tilesize -int 36
-
-#"Speeding up Mission Control animations and grouping windows by application"
-defaults write com.apple.dock expose-animation-duration -float 0.1
-defaults write com.apple.dock "expose-group-by-app" -bool true
-
-#"Setting Dock to auto-hide and lowering the auto-hiding delay from 0.5"
 defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock autohide-delay -float 0.2
-defaults write com.apple.dock autohide-time-modifier -float 0.3
 
-###############################################################################
-# Transmission
-###############################################################################
+# Trackpad: tap to click
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
-#"Use `~/Downloads/Incomplete` to store incomplete downloads"
-defaults write org.m0k.transmission UseIncompleteDownloadFolder -bool true
-defaults write org.m0k.transmission IncompleteDownloadFolder -string "${HOME}/Downloads/Incomplete"
+# Screenshots to Desktop as PNG
+defaults write com.apple.screencapture location -string "$HOME/Desktop"
+defaults write com.apple.screencapture type -string "png"
 
-#"Don't prompt for confirmation before downloading"
-defaults write org.m0k.transmission DownloadAsk -bool false
+echo "Applied settings"
 
-#"Trash original torrent files"
-defaults write org.m0k.transmission DeleteOriginalTorrent -bool true
+killall Finder 2>/dev/null || true
+killall Dock 2>/dev/null || true
 
-#"Hide the donate message"
-defaults write org.m0k.transmission WarningDonate -bool false
-
-#"Hide the legal disclaimer"
-defaults write org.m0k.transmission WarningLegal -bool false
-
-killall Finder
-
-echo "Setup almost finished!"
-
-#Install Zsh & Oh My Zsh
-echo "Installing Oh My ZSH..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+header "Setup Complete!"
+echo ""
+echo "Next steps:"
+echo "  1. Restart terminal (or run: source ~/.zshrc)"
+echo "  2. Set Raycast as hyperkey: Raycast Settings → Extensions → Hyper Key"
+echo "  3. Sign in to apps (Chrome, VS Code, etc.)"
+echo ""

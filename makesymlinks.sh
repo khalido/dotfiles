@@ -1,33 +1,23 @@
 #!/bin/bash
-############################
-# This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
-############################
+# Creates symlinks from home directory to dotfiles in ~/code/dotfiles
 
-########## Variables
+dir=~/code/dotfiles
+files=".gitconfig .gitignore_global .zshrc"
 
-dir=~/dotfiles                    # dotfiles directory
-olddir=~/dotfiles_old             # old dotfiles backup directory
+cd "$dir" || exit 1
 
-# manual list of files/folders to symlink in homedir
-# todo: just synmlink all the files starting with .
-files=".vimrc .gitconfig .gitignore_global .tldrrc"    
-
-##########
-
-# create dotfiles_old in homedir
-# echo "Creating $olddir for backup of any existing dotfiles in ~"
-# mkdir -p $olddir
-# echo "...done"
-
-# change to the dotfiles directory
-echo "Changing to the $dir directory"
-cd $dir
-echo "...done"
-
-# move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks 
 for file in $files; do
-    # echo "Moving any existing dotfiles from ~ to $olddir"
-    # mv ~/$file ~/dotfiles_old/
-    echo "Creating symlink to $file in home directory."
-    ln -s $dir/$file ~/$file
+    if [[ -e ~/$file && ! -L ~/$file ]]; then
+        echo "Backing up existing $file to ${file}.bak"
+        mv ~/"$file" ~/"${file}.bak"
+    fi
+
+    if [[ ! -L ~/$file ]]; then
+        echo "Creating symlink: ~/$file -> $dir/$file"
+        ln -s "$dir/$file" ~/"$file"
+    else
+        echo "Symlink exists: ~/$file"
+    fi
 done
+
+echo "Done!"

@@ -1,65 +1,71 @@
-# global gitignore stuff
+# Global gitignore
 # git config --global core.excludesfile ~/.gitignore_global
 
-# ko
-.secret     # where I save my api keys (yes its not the best idea)
+# Secrets (never commit these!)
+.env
+.env.*
+.env.local
+.env.*.local
+.dev.vars
+.secret
+*.pem
+*.key
 
-# node #
-########
-node_modules
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
+.python-version
+.ipynb_checkpoints/
+
+# Node / npm
+node_modules/
 npm-debug.log
-.svelte-kit
-.vercel_build_output
+.npm/
 
-# OS generated files #
-######################
+# Cloudflare Wrangler
+.wrangler/
+
+# Frontend builds
+.svelte-kit/
+.next/
+.nuxt/
+.vercel/
+dist/
+build/
+
+# macOS
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
 
 # Windows
 Thumbs.db
 desktop.ini
+ehthumbs.db
 
-# Packages #
-############
-# it's better to unpack these files and commit the raw source
-# git has its own built in compression methods
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
-*.msi
-
-# Temporary files #
-###################
-*.bak
+# IDE / Editor
+.vscode/
+.idea/
+*.sublime-workspace
 *.swp
 *.swo
 *~
-*#
 
-# IDE files #
-#############
-.vscode
-.idea
-.iml
-*.sublime-workspace
+# Archives (commit raw source instead)
+*.7z
+*.gz
+*.tar
+*.zip
+*.rar
+*.dmg
+*.iso
 
-# Compiled source #
-###################
-*.com
-*.class
-*.dll
+# Compiled
 *.exe
-*.o
+*.dll
 *.so
-*.pyc
-*.pyo
+*.o
+*.class

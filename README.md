@@ -1,75 +1,83 @@
-# dotfiles
+# Dotfiles
 
-basic config files for all the things as I learn more linuxy things. There are many super duper all singing and dancing setups out there, this one is done by me so I can understand whats going on.
+Personal config files and setup scripts.
 
-this repo:
-
-1. Provides dotfiles to [personalize](https://github.com/khalido/dotfiles.git) github codespaces and other linux machines
-2. script to setup computers - so far mac and chromeos
-
-## setup chromeos from scratch
+## Quick Start (New Mac)
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/setup_chromeos.sh)"
+# One-liner setup
+curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/main/setup_mac.sh | bash
 ```
 
-This installs 
+Or clone and run:
+```bash
+git clone https://github.com/khalido/dotfiles ~/code/dotfiles
+bash ~/code/dotfiles/setup_mac.sh
+```
 
-- cli: bat 
-- gui: vscode, obsidian
-- mambaforge with a py39 and streamlit env
-- volta and node 17
+## What's Included
 
-## setup mac
+### Setup Scripts
+
+- **setup_mac.sh** - Full Mac setup: Homebrew, uv, CLI tools, apps, macOS settings
+- **makesymlinks.sh** - Symlink dotfiles (.gitconfig, .zshrc, etc.) to home dir
+
+### Utility Scripts (run with uv)
+
+- **fnm.py** - Node.js version manager helper: install, upgrade, cleanup
+- **gitcloneall.py** - Clone all GitHub repos for a user
 
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/setup_mac.sh)"
+uv run fnm.py status      # Check Node.js versions
+uv run fnm.py upgrade     # Upgrade Node.js and global packages
+uv run gitcloneall.py     # Clone all repos to ~/code
 ```
 
-Installs essential apps using [brew](https://brew.sh).
-Tweaks some settings, a nice guide here: https://macos-defaults.com
+### Claude Code Config
 
-Shoutout to all the mac setup scripts on github, from which most of the stuff here comes from.
+The `claude/` directory contains global slash commands and skills for Claude Code.
+Symlinked to `~/.claude/commands` and `~/.claude/skills`.
 
-Note: Everything is in one big script so the above command works.
+```bash
+uv run claude/setup.py    # Setup symlinks on new machine
+```
 
-### setup hyper key
+### Dotfiles
 
-In karabiner-elements, import this rule from internet: `Change caps_lock key (rev 5)`
+- **.gitconfig** - Git configuration
+- **.gitignore_global** - Global gitignore
+- **.zshrc** - Zsh configuration
 
-Select the modification: `Change caps_lock key to command+control+option+shift. (Post f19 key when pressed alone)`.
+## Apps Installed
 
-Now set capslock as the raycast shortcut key, and capslock + some key as triggers for various stuff.
+### CLI (via Homebrew)
+bat, eza, ripgrep, fzf, fd, jq, tree, git, gh, fnm, gemini-cli, tlrc, opencode
 
-e.g I currently have:
+### Python Tools (via uv)
+ruff
 
+### Essential GUI Apps
+raycast, firefox, google-chrome, visual-studio-code, zed, ghostty, claude, claude-code, orbstack, monitorcontrol, obsidian
+
+### Manual Installs
+- [Chorus](https://chorus.sh/download) - Git client
+
+### Optional GUI Apps
+iina, spotify, transmission, keka
+
+## Hyper Key Setup (via Raycast)
+
+Raycast can map Caps Lock to Hyper Key natively (no karabiner needed):
+
+1. Open Raycast Settings → Extensions → Hyper Key
+2. Enable and set Caps Lock as the trigger
+3. In System Settings → Keyboard → Modifier Keys, ensure Caps Lock is not "No Action"
+
+Example bindings:
 ```
 hyper        : opens raycast
-
-# window stuff
-hyper + [    : window fill left half
-hyper + ]    : window fill right half
+hyper + [    : window left half
+hyper + ]    : window right half
 hyper + M    : maximize
-hyper + up   : max height
-hyper + down : max width
-
-# misc useful things
-hyper + L : lock screen
-```
-
-Now I run the error of forgetting all the mac shortcuts, but the advantage is that these are somewhat similar to chromeos shortcuts.
-
-
-## Notes
-
-if a shell script doesn't execute: `sudo chmod +x mac_settings.sh`
-
-# dev setup
-
-## clone all my public repos
-
-Clone all my repos (only does up to 200 repos) - but copy this script into a `~/code` and run there:
-
-```bash
-./gitcloneall.sh khalido
+hyper + L    : lock screen
 ```
