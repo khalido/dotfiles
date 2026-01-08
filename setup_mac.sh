@@ -22,7 +22,10 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 header "Xcode CLI Tools"
+# Needed for git, compilers, etc. Will open GUI prompt.
 xcode-select --install 2>/dev/null || echo "Already installed"
+echo "If prompted, click Install and wait for completion before continuing."
+read -p "Press Enter when ready..."
 
 header "Homebrew"
 if ! command -v brew &>/dev/null; then
@@ -177,10 +180,11 @@ defaults write com.apple.finder FXPreferredViewStyle Clmv
 # Don't create .DS_Store on network volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 
-# Dock: auto-hide, smaller icons
+# Dock: auto-hide, smaller icons, fast animations
 defaults write com.apple.dock tilesize -int 36
 defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock autohide-delay -float 0.2
+defaults write com.apple.dock autohide-time-modifier -float 0.15
 
 # Trackpad: tap to click
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true

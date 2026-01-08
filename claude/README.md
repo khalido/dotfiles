@@ -6,9 +6,11 @@ Global slash commands and skills for Claude Code, synced via dotfiles.
 
 ```
 claude/
-├── commands/    # Slash commands (user-invoked with /command-name)
-├── skills/      # Skills (Claude auto-invokes when relevant)
-├── setup.py     # Setup script for new machines
+├── commands/      # Slash commands (user-invoked with /command-name)
+├── skills/        # Skills (Claude auto-invokes when relevant)
+├── settings.json  # Global permissions (auto-allow safe tools)
+├── CLAUDE.md      # Global instructions (Python: uv, ruff, pytest)
+├── setup.py       # Setup script for new machines
 └── README.md
 ```
 
@@ -56,6 +58,16 @@ Key frontmatter options:
 - `user-invocable: false` - Hide from slash menu (Claude-only)
 - `allowed-tools: [Read, Bash(git *)]` - Restrict tool access
 
+## Global Permissions (`settings.json`)
+
+Auto-allows non-destructive tools so you don't get prompted:
+- `WebSearch`, `WebFetch` - web access
+- `Read`, `Glob`, `Grep` - file reading
+- `Bash(git status/log/diff)` - read-only git
+- `Bash(uv run/npm run/npx)` - run scripts
+
+Edit `settings.json` to customize.
+
 ## Manual Symlink Setup
 
 If you prefer not to use the script:
@@ -68,3 +80,8 @@ rm -rf ~/.claude/commands ~/.claude/skills
 ln -s ~/code/dotfiles/claude/commands ~/.claude/commands
 ln -s ~/code/dotfiles/claude/skills ~/.claude/skills
 ```
+
+## Resources
+
+- [Skills Documentation](https://code.claude.com/docs/en/skills) - Official guide
+- [Anthropic Skills Repo](https://github.com/anthropics/skills) - Example skills to learn from

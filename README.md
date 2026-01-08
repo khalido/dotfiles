@@ -44,9 +44,9 @@ uv run claude/setup.py    # Setup symlinks on new machine
 
 ### Dotfiles
 
-- **.gitconfig** - Git configuration
-- **.gitignore_global** - Global gitignore
-- **.zshrc** - Zsh configuration
+- **.gitconfig** - Git configuration (symlinked)
+- **.gitignore_global** - Global gitignore (symlinked)
+- **.zshrc** - Example zsh config (copy what you need, don't symlink - keep secrets in real ~/.zshrc)
 
 ## Apps Installed
 

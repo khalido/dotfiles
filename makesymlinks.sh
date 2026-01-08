@@ -2,7 +2,7 @@
 # Creates symlinks from home directory to dotfiles in ~/code/dotfiles
 
 dir=~/code/dotfiles
-files=".gitconfig .gitignore_global .zshrc"
+files=".gitconfig .gitignore_global"
 
 cd "$dir" || exit 1
 
