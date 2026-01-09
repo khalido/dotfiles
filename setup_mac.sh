@@ -70,6 +70,8 @@ cli_apps=(
 
     # Nice to have
     tlrc        # tldr pages, concise man pages
+    starship    # modern shell prompt
+    cloudflared # Cloudflare tunnels for local dev
 )
 
 for app in "${cli_apps[@]}"; do
@@ -79,6 +81,15 @@ done
 # OpenCode (AI coding assistant)
 brew tap anomalyco/tap 2>/dev/null || true
 brew install anomalyco/tap/opencode 2>/dev/null || echo "  opencode: already installed"
+
+header "Dotfiles"
+mkdir -p ~/code
+if [[ ! -d ~/code/dotfiles ]]; then
+    echo "Cloning dotfiles..."
+    git clone https://github.com/khalido/dotfiles ~/code/dotfiles
+else
+    echo "Already cloned"
+fi
 
 header "Python Tools (via uv)"
 python_tools=(
@@ -93,11 +104,10 @@ for tool in "${python_tools[@]}"; do
 done
 
 header "Node.js (via fnm)"
+eval "$(fnm env)"
 if [[ -f ~/code/dotfiles/fnm.py ]]; then
     uv run ~/code/dotfiles/fnm.py install --yes
 else
-    # Fallback if dotfiles not cloned yet
-    eval "$(fnm env)"
     fnm install --lts
     fnm default lts-latest
 fi
@@ -122,7 +132,11 @@ essential_apps=(
     orbstack        # Docker/VMs, fast & light
 
     # Utilities
+    coteditor       # fast native text editor
     monitorcontrol  # external monitor brightness/volume
+
+    # Fonts
+    font-fira-code-nerd-font  # for starship/terminal icons
 
     # Notes
     obsidian
@@ -149,18 +163,29 @@ done
 
 brew cleanup
 
-header "Dotfiles"
-mkdir -p ~/code
-if [[ ! -d ~/code/dotfiles ]]; then
-    echo "Cloning dotfiles..."
-    git clone https://github.com/khalido/dotfiles ~/code/dotfiles
+header "Shell Config"
+# Symlink .zshrc (secrets go in ~/.zshrc.local which is sourced)
+if [[ -L ~/.zshrc ]]; then
+    echo ".zshrc: already symlinked"
+elif [[ -f ~/.zshrc ]]; then
+    echo ".zshrc: backing up to ~/.zshrc.bak"
+    mv ~/.zshrc ~/.zshrc.bak
+    ln -s ~/code/dotfiles/.zshrc ~/.zshrc
+    echo ".zshrc: linked"
 else
-    echo "Already cloned"
+    ln -s ~/code/dotfiles/.zshrc ~/.zshrc
+    echo ".zshrc: linked"
 fi
 
-# Setup Claude Code symlinks
+# Create .zshrc.local if it doesn't exist
+if [[ ! -f ~/.zshrc.local ]]; then
+    echo "# Local secrets (API keys, tokens) - not in git" > ~/.zshrc.local
+    echo ".zshrc.local: created (add your API keys here)"
+fi
+
+header "Claude Code Config"
 if [[ -f ~/code/dotfiles/claude/setup.py ]]; then
-    echo "Setting up Claude Code config..."
+    echo "Setting up Claude Code symlinks..."
     uv run ~/code/dotfiles/claude/setup.py
 fi
 

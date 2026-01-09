@@ -57,6 +57,13 @@ uv add google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
 Refs: [Sheets quickstart](https://developers.google.com/workspace/sheets/api/quickstart/python), [reading values](https://developers.google.com/workspace/sheets/api/guides/values#python)
 
+## Local Testing
+
+Expose local servers via Cloudflare tunnel:
+```bash
+cloudflared tunnel --url http://localhost:8000
+```
+
 ## Deployment
 
 Railway for FastAPI projects. Volumes required for persistent files (SQLite db, credentials.json).

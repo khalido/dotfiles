@@ -27,6 +27,7 @@ def main():
     file_symlinks = {
         "settings.json": dotfiles_claude / "settings.json",
         "CLAUDE.md": dotfiles_claude / "CLAUDE.md",
+        "statusline.py": dotfiles_claude / "statusline.py",
     }
 
     print(f"Setting up Claude Code symlinks...")
