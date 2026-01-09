@@ -81,7 +81,16 @@ brew tap anomalyco/tap 2>/dev/null || true
 brew install anomalyco/tap/opencode 2>/dev/null || echo "  opencode: already installed"
 
 header "Python Tools (via uv)"
-uv tool install ruff@latest 2>/dev/null || echo "  ruff: already installed"
+python_tools=(
+    ruff        # linter/formatter
+    harlequin   # terminal SQL client
+    posting     # terminal API client (like Postman)
+    llm         # Simon Willison's LLM CLI
+)
+
+for tool in "${python_tools[@]}"; do
+    uv tool install "$tool" 2>/dev/null || echo "  $tool: already installed"
+done
 
 header "Node.js (via fnm)"
 if [[ -f ~/code/dotfiles/fnm.py ]]; then
