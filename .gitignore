@@ -1,0 +1,17 @@
+# Claude Code project settings (auto-generated)
+.claude/
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+credentials*.json
+*secret*
+
+# macOS
+.DS_Store
+
+# Local overrides
+*.local
+*.local.*
