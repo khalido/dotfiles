@@ -18,5 +18,9 @@
       "Bash(npx:*)"
     ],
     "deny": []
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "/opt/homebrew/bin/uv run --no-project ~/.claude/statusline.py"
   }
 }

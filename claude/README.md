@@ -6,11 +6,12 @@ Global slash commands and skills for Claude Code, synced via dotfiles.
 
 ```
 claude/
-├── commands/      # Slash commands (user-invoked with /command-name)
-├── skills/        # Skills (Claude auto-invokes when relevant)
-├── settings.json  # Global permissions (auto-allow safe tools)
-├── CLAUDE.md      # Global instructions (Python: uv, ruff, pytest)
-├── setup.py       # Setup script for new machines
+├── commands/       # Slash commands (user-invoked with /command-name)
+├── skills/         # Skills (Claude auto-invokes when relevant)
+├── settings.json   # Global permissions + statusline config
+├── statusline.py   # Custom status line script
+├── CLAUDE.md       # Global instructions (Python: uv, ruff, pytest)
+├── setup.py        # Setup script for new machines
 └── README.md
 ```
 
@@ -81,7 +82,22 @@ ln -s ~/code/dotfiles/claude/commands ~/.claude/commands
 ln -s ~/code/dotfiles/claude/skills ~/.claude/skills
 ```
 
+## Status Line
+
+Custom status line showing: directory, git branch, model, context %, tokens, and cost.
+
+Configured in `settings.json`:
+```json
+"statusLine": {
+  "type": "command",
+  "command": "/opt/homebrew/bin/uv run --no-project ~/.claude/statusline.py"
+}
+```
+
+See [statusline docs](https://code.claude.com/docs/en/statusline) for JSON schema.
+
 ## Resources
 
+- [Statusline Documentation](https://code.claude.com/docs/en/statusline) - Custom status lines
 - [Skills Documentation](https://code.claude.com/docs/en/skills) - Official guide
 - [Anthropic Skills Repo](https://github.com/anthropics/skills) - Example skills to learn from
