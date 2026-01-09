@@ -46,24 +46,71 @@ uv run claude/setup.py    # Setup symlinks on new machine
 
 - **.gitconfig** - Git configuration (symlinked)
 - **.gitignore_global** - Global gitignore (symlinked)
-- **.zshrc** - Example zsh config (copy what you need, don't symlink - keep secrets in real ~/.zshrc)
+- **.zshrc** - Shell config (symlinked; secrets go in ~/.zshrc.local)
 
 ## Apps Installed
 
-### CLI (via Homebrew)
-bat, eza, ripgrep, fzf, fd, jq, tree, git, gh, fnm, gemini-cli, tlrc, opencode
+### CLI Tools (Homebrew)
 
-### Python Tools (via uv)
-ruff
+| App | Description |
+|-----|-------------|
+| bat | Better cat with syntax highlighting |
+| eza | Modern ls with colors/icons |
+| ripgrep | Fast grep replacement |
+| fzf | Fuzzy finder for everything |
+| fd | Fast find replacement |
+| jq | JSON processor |
+| tree | Directory tree view |
+| git | Version control |
+| gh | GitHub CLI for PRs/issues |
+| fnm | Fast Node.js version manager |
+| gemini-cli | Google Gemini in terminal |
+| tlrc | tldr pages, concise man pages |
+| starship | Modern shell prompt |
+| cloudflared | Cloudflare tunnels for local dev |
+| opencode | AI coding assistant (via tap) |
 
-### Essential GUI Apps
-raycast, firefox, google-chrome, visual-studio-code, zed, ghostty, claude, claude-code, orbstack, monitorcontrol, obsidian
+### GUI Apps - Essential (Homebrew Casks)
+
+| App | Description |
+|-----|-------------|
+| raycast | Launcher + hyperkey + window management |
+| firefox | Browser |
+| google-chrome | Browser |
+| visual-studio-code | Code editor |
+| zed | Fast native code editor |
+| ghostty | GPU-accelerated terminal |
+| claude | Claude desktop app |
+| claude-code | Claude Code CLI |
+| orbstack | Docker/VMs, fast & light |
+| coteditor | Fast native text editor |
+| monitorcontrol | External monitor brightness/volume |
+| font-fira-code-nerd-font | Nerd font for starship/terminal icons |
+| obsidian | Notes |
+
+### GUI Apps - Optional (Homebrew Casks)
+
+| App | Description |
+|-----|-------------|
+| iina | Elegant media player |
+| spotify | Music streaming |
+| transmission | Torrent client |
+| keka | File archiver |
+
+### Python Tools (uv)
+
+| Tool | Description |
+|------|-------------|
+| ruff | Linter/formatter |
+| harlequin | Terminal SQL client |
+| posting | Terminal API client (like Postman) |
+| llm | Simon Willison's LLM CLI |
 
 ### Manual Installs
-- [Chorus](https://chorus.sh/download) - Git client
 
-### Optional GUI Apps
-iina, spotify, transmission, keka
+| App | Description |
+|-----|-------------|
+| [Chorus](https://chorus.sh/download) | Git client (no brew cask) |
 
 ## Hyper Key Setup (via Raycast)
 
