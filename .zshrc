@@ -13,7 +13,7 @@ eval "$(fnm env)"
 eval "$(starship init zsh)"
 
 # Editor (for Claude Code Ctrl+G, git, etc)
-export EDITOR="open -W -a CotEditor"
+export EDITOR="zed --wait"
 
 # Aliases
 alias ll='eza -la'

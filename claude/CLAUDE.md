@@ -7,3 +7,4 @@ Use `uv` (never pip), `ruff`, `pytest`. See `~/.claude/skills/python/` for full 
 - Keep code simple, avoid over-engineering
 - Prefer editing existing files over creating new ones
 - Small focused functions, logically grouped files
+- Think before coding: state assumptions, surface tradeoffs, ask if uncertain
