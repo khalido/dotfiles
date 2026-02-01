@@ -33,7 +33,7 @@ def main():
         if skills_target.resolve() == skills_source:
             print("  skills/: already linked")
         else:
-            print(f"  skills/: updating symlink")
+            print("  skills/: updating symlink")
             skills_target.unlink()
             skills_target.symlink_to(skills_source)
             print("  skills/: linked")
