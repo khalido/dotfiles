@@ -12,12 +12,20 @@ eval "$(fnm env)"
 # Starship prompt
 eval "$(starship init zsh)"
 
+# Zoxide (smarter cd)
+eval "$(zoxide init zsh)"
+
+# Atuin (shell history with sync)
+eval "$(atuin init zsh)"
+
 # Editor (for Claude Code Ctrl+G, git, etc)
 export EDITOR="zed --wait"
 
 # Aliases
 alias ll='eza -la'
 alias cat='bat'
+alias cd='z'  # use zoxide for cd
+alias cc='claude'
 alias brewup='brew update && brew upgrade'
 alias ccu='npx ccusage@latest'
 alias ncu='npx npm-check-updates'

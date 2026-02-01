@@ -42,12 +42,12 @@ brew update
 header "uv (Python)"
 if ! command -v uv &>/dev/null; then
     echo "Installing..."
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    # Add to path for this session
-    export PATH="$HOME/.local/bin:$PATH"
+    brew install uv
 else
     echo "Already installed"
 fi
+# Ensure uv tools are in path
+export PATH="$HOME/.local/bin:$PATH"
 
 header "CLI Tools"
 cli_apps=(
@@ -68,10 +68,17 @@ cli_apps=(
     # AI tools
     gemini-cli  # Google Gemini in terminal
 
+    # Data tools
+    duckdb      # local SQL analytics
+
     # Nice to have
     tlrc        # tldr pages, concise man pages
     starship    # modern shell prompt
     cloudflared # Cloudflare tunnels for local dev
+    btop        # system monitor
+    jless       # interactive JSON viewer
+    zoxide      # smarter cd, "z foo" jumps to ~/code/foo
+    atuin       # magical shell history with sync
 )
 
 for app in "${cli_apps[@]}"; do
@@ -114,12 +121,12 @@ fi
 
 header "Essential Apps"
 essential_apps=(
-    # Launcher (also handles hyperkey + window management)
+    # Launcher (also handles hyperkey + window management + coffee/keep awake)
     raycast
 
     # Browsers
-    firefox
     google-chrome
+    firefox         # useful for testing
 
     # Coding
     visual-studio-code
@@ -132,8 +139,8 @@ essential_apps=(
     orbstack        # Docker/VMs, fast & light
 
     # Utilities
-    coteditor       # fast native text editor
-    monitorcontrol  # external monitor brightness/volume
+    cleanshot       # screenshot tool
+    github-desktop  # git GUI
 
     # Fonts
     font-fira-code-nerd-font  # for starship/terminal icons
@@ -141,9 +148,6 @@ essential_apps=(
     # Notes
     obsidian
 )
-
-# Manual installs (no brew cask):
-# - Chorus (Git client): https://chorus.sh/download
 
 for app in "${essential_apps[@]}"; do
     brew install --cask "$app" 2>/dev/null || echo "  $app: already installed"
@@ -162,6 +166,15 @@ for app in "${optional_apps[@]}"; do
 done
 
 brew cleanup
+
+header "Manual Installs"
+echo "These apps need manual installation:"
+echo ""
+echo "  Raycast Extensions (open Raycast → Store):"
+echo "    - Coffee: keep Mac awake (replaces Amphetamine)"
+echo ""
+echo "  App Store:"
+echo "    - Spokenly: text to speech"
 
 header "Shell Config"
 # Symlink .zshrc (secrets go in ~/.zshrc.local which is sourced)
@@ -184,9 +197,8 @@ if [[ ! -f ~/.zshrc.local ]]; then
 fi
 
 header "Claude Code Config"
-if [[ -f ~/code/dotfiles/claude/setup.py ]]; then
-    echo "Setting up Claude Code symlinks..."
-    uv run ~/code/dotfiles/claude/setup.py
+if [[ -f ~/code/dotfiles/setup_claude_code.py ]]; then
+    uv run ~/code/dotfiles/setup_claude_code.py
 fi
 
 header "macOS Settings"

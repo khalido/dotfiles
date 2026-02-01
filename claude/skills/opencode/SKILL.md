@@ -31,7 +31,7 @@ opencode run "Context summary here.
 
 Question: $ARGUMENTS
 
-Give me your honest take - be direct and concise." -m opencode/kimi-k2.5 -f CLAUDE.md -f src/relevant.py
+Give me your honest take - be direct and concise." -m opencode/kimi-k2.5-free -f CLAUDE.md -f src/relevant.py
 ```
 
 ## Models
@@ -42,11 +42,12 @@ Pick based on task complexity:
 |-------|---------|
 | `opencode/minimax-m2.1` | Quick questions, lightweight |
 | `opencode/glm-4.7` | Evals, comparisons, reviews |
-| `opencode/kimi-k2.5` | Default — strong agentic model, good value |
+| `opencode/kimi-k2.5-free` | Default — strong agentic model (free tier, temporary) |
+| `opencode/kimi-k2.5` | Same as above, paid — use when free tier ends |
 | `opencode/gpt-5.1-codex-mini` | Everyday tasks (cheap) |
 | `opencode/gpt-5.2-codex` | Bug checking, 2nd opinions on complex tasks and architecture decisions (paid) |
 
-Default model is `opencode/kimi-k2.5`. Add `-m <model>` to use a different one.
+Default model is `opencode/kimi-k2.5-free`. Add `-m <model>` to use a different one.
 
 Ref: [OpenCode Zen models](https://opencode.ai/docs/zen/)
 

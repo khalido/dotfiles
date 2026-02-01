@@ -8,3 +8,4 @@ Use `uv` (never pip), `ruff`, `pytest`. See `~/.claude/skills/python/` for full 
 - Prefer editing existing files over creating new ones
 - Small focused functions, logically grouped files
 - Think before coding: state assumptions, surface tradeoffs, ask if uncertain
+- Review before commit: for non-trivial changes, run `/code-review` before committing

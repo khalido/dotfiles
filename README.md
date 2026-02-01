@@ -1,25 +1,28 @@
 # Dotfiles
 
-Personal config files and setup scripts.
+Mac setup scripts and config files. Install apps via Homebrew where available.
 
-## Quick Start (New Mac)
+## New Mac Setup
 
 ```bash
-# One-liner setup
+# Run the setup script (installs Homebrew, CLI tools, apps, configures macOS)
 curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/main/setup_mac.sh | bash
 ```
 
-Or clone and run:
-```bash
-git clone https://github.com/khalido/dotfiles ~/code/dotfiles
-bash ~/code/dotfiles/setup_mac.sh
-```
+After the script completes:
+
+1. **Restart terminal** (or `source ~/.zshrc`)
+2. **Add API keys** to `~/.zshrc.local` (not synced - copy from password manager or backup)
+3. **Setup Atuin** (optional): `atuin register` or `atuin login`
+4. **Sign into apps**: Chrome, Raycast, Obsidian, VS Code (settings sync)
+5. **Install Raycast extensions**: Coffee (keep awake), AI (quick questions)
 
 ## What's Included
 
 ### Setup Scripts
 
 - **setup_mac.sh** - Full Mac setup: Homebrew, uv, CLI tools, apps, macOS settings
+- **setup_claude_code.py** - Claude Code config: symlinks skills, copies settings
 - **makesymlinks.sh** - Symlink dotfiles (.gitconfig, .zshrc, etc.) to home dir
 
 ### Utility Scripts (run with uv)
@@ -35,12 +38,15 @@ uv run gitcloneall.py     # Clone all repos to ~/code
 
 ### Claude Code Config
 
-The `claude/` directory contains global slash commands and skills for Claude Code.
-Symlinked to `~/.claude/commands` and `~/.claude/skills`.
+The `claude/` directory contains skills and settings for Claude Code.
 
 ```bash
-uv run claude/setup.py    # Setup symlinks on new machine
+uv run setup_claude_code.py    # Run on new machine
 ```
+
+This will:
+- Symlink `claude/skills/` → `~/.claude/skills/`
+- Copy `settings.json`, `CLAUDE.md`, `statusline.py` to `~/.claude/`
 
 ### Dotfiles
 
@@ -65,9 +71,14 @@ uv run claude/setup.py    # Setup symlinks on new machine
 | gh | GitHub CLI for PRs/issues |
 | fnm | Fast Node.js version manager |
 | gemini-cli | Google Gemini in terminal |
+| duckdb | Local SQL analytics |
 | tlrc | tldr pages, concise man pages |
 | starship | Modern shell prompt |
 | cloudflared | Cloudflare tunnels for local dev |
+| btop | System monitor |
+| jless | Interactive JSON viewer |
+| zoxide | Smarter cd command |
+| atuin | Shell history with sync |
 | opencode | AI coding assistant (via tap) |
 
 ### GUI Apps - Essential (Homebrew Casks)
@@ -83,8 +94,8 @@ uv run claude/setup.py    # Setup symlinks on new machine
 | claude | Claude desktop app |
 | claude-code | Claude Code CLI |
 | orbstack | Docker/VMs, fast & light |
-| coteditor | Fast native text editor |
-| monitorcontrol | External monitor brightness/volume |
+| cleanshot | Screenshot tool |
+| github-desktop | Git GUI |
 | font-fira-code-nerd-font | Nerd font for starship/terminal icons |
 | obsidian | Notes |
 
@@ -110,7 +121,13 @@ uv run claude/setup.py    # Setup symlinks on new machine
 
 | App | Description |
 |-----|-------------|
-| [Chorus](https://chorus.sh/download) | Git client (no brew cask) |
+| [Spokenly](https://apps.apple.com/app/spokenly) | Text to speech (App Store) |
+
+### Raycast Extensions
+
+| Extension | Description |
+|-----------|-------------|
+| Coffee | Keep Mac awake (replaces Amphetamine) |
 
 ## Hyper Key Setup (via Raycast)
 
