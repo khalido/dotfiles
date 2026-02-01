@@ -13,9 +13,8 @@ After the script completes:
 
 1. **Restart terminal** (or `source ~/.zshrc`)
 2. **Restore API keys** - see [Migrate Secrets](#migrate-secrets) below
-3. **Setup Atuin** (optional): `atuin register` or `atuin login`
-4. **Sign into apps**: Chrome, Raycast, Obsidian, VS Code (settings sync)
-5. **Install Raycast extensions**: Coffee (keep awake), AI (quick questions)
+3. **Sign into apps**: Chrome, Raycast, Obsidian, VS Code (settings sync)
+4. **Install Raycast extensions**: Coffee (keep awake), AI (quick questions)
 
 ## Migrate Secrets
 
@@ -96,7 +95,6 @@ This will:
 | btop | System monitor |
 | jless | Interactive JSON viewer |
 | zoxide | Smarter cd command |
-| atuin | Shell history with sync |
 | opencode | AI coding assistant (via tap) |
 
 ### GUI Apps - Essential (Homebrew Casks)

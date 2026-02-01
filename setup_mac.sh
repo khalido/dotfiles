@@ -78,7 +78,6 @@ cli_apps=(
     btop        # system monitor
     jless       # interactive JSON viewer
     zoxide      # smarter cd, "z foo" jumps to ~/code/foo
-    atuin       # magical shell history with sync
 )
 
 for app in "${cli_apps[@]}"; do

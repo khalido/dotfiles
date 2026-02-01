@@ -15,9 +15,6 @@ eval "$(starship init zsh)"
 # Zoxide (smarter cd)
 eval "$(zoxide init zsh)"
 
-# Atuin (shell history with sync)
-eval "$(atuin init zsh)"
-
 # Editor (for Claude Code Ctrl+G, git, etc)
 export EDITOR="zed --wait"
 
