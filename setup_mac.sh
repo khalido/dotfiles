@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
 # Setup script for a new Mac
-# Run: curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/setup_mac.sh | bash
-# Or:  bash setup_mac.sh
+# curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/setup_mac.sh -o ~/setup_mac.sh
+# bash ~/setup_mac.sh
 
 # Note: no "set -e" - we want the script to continue past failures
 
@@ -25,7 +25,7 @@ header "Xcode CLI Tools"
 # Needed for git, compilers, etc. Will open GUI prompt.
 xcode-select --install 2>/dev/null || echo "Already installed"
 echo "If prompted, click Install and wait for completion before continuing."
-read -p "Press Enter when ready..."
+read -p "Press Enter when ready..." < /dev/tty
 
 header "Homebrew"
 if ! command -v brew &>/dev/null; then
