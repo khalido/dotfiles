@@ -4,7 +4,7 @@
 # Run: curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/setup_mac.sh | bash
 # Or:  bash setup_mac.sh
 
-set -e
+# Note: no "set -e" - we want the script to continue past failures
 
 header() {
     echo ""
