@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Setup script for a new Mac
-# Run: curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/main/setup_mac.sh | bash
+# Run: curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/setup_mac.sh | bash
 # Or:  bash setup_mac.sh
 
 set -e
