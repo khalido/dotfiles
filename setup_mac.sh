@@ -46,8 +46,6 @@ if ! command -v uv &>/dev/null; then
 else
     echo "Already installed"
 fi
-# Ensure uv tools are in path
-export PATH="$HOME/.local/bin:$PATH"
 
 header "CLI Tools"
 cli_apps=(
@@ -84,8 +82,7 @@ for app in "${cli_apps[@]}"; do
     brew install "$app" 2>/dev/null || echo "  $app: already installed"
 done
 
-# OpenCode (AI coding assistant)
-brew tap anomalyco/tap 2>/dev/null || true
+# OpenCode (AI coding assistant) - auto-taps anomalyco/tap
 brew install anomalyco/tap/opencode 2>/dev/null || echo "  opencode: already installed"
 
 header "Dotfiles"
