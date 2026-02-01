@@ -12,10 +12,28 @@ curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/main/setup_mac.sh 
 After the script completes:
 
 1. **Restart terminal** (or `source ~/.zshrc`)
-2. **Add API keys** to `~/.zshrc.local` (not synced - copy from password manager or backup)
+2. **Restore API keys** - see [Migrate Secrets](#migrate-secrets) below
 3. **Setup Atuin** (optional): `atuin register` or `atuin login`
 4. **Sign into apps**: Chrome, Raycast, Obsidian, VS Code (settings sync)
 5. **Install Raycast extensions**: Coffee (keep awake), AI (quick questions)
+
+## Migrate Secrets
+
+Transfer `~/.zshrc.local` (API keys) via encrypted zip to Google Drive.
+
+**On old Mac:**
+```bash
+zip -e ~/Desktop/zshrc.local.zip ~/.zshrc.local
+# Enter password when prompted, then move zip to Google Drive
+```
+
+**On new Mac:**
+```bash
+# Download zip from Google Drive to Desktop, then:
+unzip ~/Desktop/zshrc.local.zip -d ~
+rm ~/Desktop/zshrc.local.zip
+source ~/.zshrc
+```
 
 ## What's Included
 
