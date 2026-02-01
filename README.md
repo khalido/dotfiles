@@ -4,8 +4,9 @@ Mac setup scripts and config files. Install apps via Homebrew where available.
 
 ## New Mac Setup
 
+Run the setup script (installs Homebrew, CLI tools, apps, configures macOS):
+
 ```bash
-# Run the setup script (installs Homebrew, CLI tools, apps, configures macOS)
 curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/main/setup_mac.sh | bash
 ```
 
