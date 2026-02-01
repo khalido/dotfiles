@@ -63,9 +63,6 @@ cli_apps=(
     gh          # GitHub CLI for PRs/issues
     fnm         # fast Node.js version manager
 
-    # AI tools
-    gemini-cli  # Google Gemini in terminal
-
     # Data tools
     duckdb      # local SQL analytics
 
@@ -82,8 +79,6 @@ for app in "${cli_apps[@]}"; do
     brew install "$app" 2>/dev/null || echo "  $app: already installed"
 done
 
-# OpenCode (AI coding assistant) - auto-taps anomalyco/tap
-brew install anomalyco/tap/opencode 2>/dev/null || echo "  opencode: already installed"
 
 header "Dotfiles"
 mkdir -p ~/code
@@ -115,6 +110,9 @@ else
     fnm default lts-latest
 fi
 
+# Global npm packages (uses fnm-managed Node, not Homebrew's)
+npm install -g @google/gemini-cli opencode-ai
+
 header "Essential Apps"
 essential_apps=(
     # Launcher (also handles hyperkey + window management + coffee/keep awake)
@@ -137,6 +135,7 @@ essential_apps=(
     # Utilities
     cleanshot       # screenshot tool
     github-desktop  # git GUI
+    google-drive    # file sync
 
     # Fonts
     font-fira-code-nerd-font  # for starship/terminal icons
@@ -157,9 +156,16 @@ optional_apps=(
     keka            # file archiver
 )
 
-for app in "${optional_apps[@]}"; do
-    brew install --cask "$app" 2>/dev/null || echo "  $app: already installed"
-done
+echo "Available: ${optional_apps[*]}"
+read -p "Install optional apps? [y/N] " -n 1 -r < /dev/tty
+echo ""
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    for app in "${optional_apps[@]}"; do
+        brew install --cask "$app" 2>/dev/null || echo "  $app: already installed"
+    done
+else
+    echo "Skipped"
+fi
 
 brew cleanup
 
@@ -190,6 +196,14 @@ fi
 if [[ ! -f ~/.zshrc.local ]]; then
     echo "# Local secrets (API keys, tokens) - not in git" > ~/.zshrc.local
     echo ".zshrc.local: created (add your API keys here)"
+fi
+
+# Google Drive shortcut (only if Google Drive is installed)
+if [[ -d ~/My\ Drive && ! -L ~/gdrive ]]; then
+    ln -s ~/My\ Drive ~/gdrive
+    echo "gdrive: linked to ~/My Drive"
+elif [[ -L ~/gdrive ]]; then
+    echo "gdrive: already symlinked"
 fi
 
 header "Claude Code Config"
