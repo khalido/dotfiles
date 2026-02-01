@@ -210,8 +210,16 @@ defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 # Full keyboard access
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
+# Faster key repeat (great for vim)
+defaults write NSGlobalDomain KeyRepeat -int 2
+defaults write NSGlobalDomain InitialKeyRepeat -int 15
+
 # Show all file extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# Show hidden files and path bar in Finder
+defaults write com.apple.finder AppleShowAllFiles -bool true
+defaults write com.apple.finder ShowPathbar -bool true
 
 # Disable extension change warning
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false

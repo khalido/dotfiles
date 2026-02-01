@@ -15,3 +15,8 @@ credentials*.json
 # Local overrides
 *.local
 *.local.*
+
+# misc
+.ruff_cache
+*.pyc
+__pycache__

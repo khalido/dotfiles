@@ -1,0 +1,11 @@
+# Copy this to ~/.zshrc.local and fill in your keys
+# ~/.zshrc.local is sourced by .zshrc but NOT tracked in git
+# (named zshrc-local-example to avoid .gitignore pattern *.local.*)
+
+# AI APIs
+export ANTHROPIC_API_KEY="your-key-here"
+export OPENAI_API_KEY="your-key-here"
+export GOOGLE_API_KEY="your-key-here"
+
+# GitHub (for gh CLI if needed beyond auth)
+export GITHUB_TOKEN="your-token-here"
