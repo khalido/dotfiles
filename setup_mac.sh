@@ -142,6 +142,9 @@ essential_apps=(
 
     # Notes
     obsidian
+
+    # Communication
+    whatsapp
 )
 
 for app in "${essential_apps[@]}"; do
@@ -196,6 +199,23 @@ fi
 if [[ ! -f ~/.zshrc.local ]]; then
     echo "# Local secrets (API keys, tokens) - not in git" > ~/.zshrc.local
     echo ".zshrc.local: created (add your API keys here)"
+fi
+
+# Git config
+if [[ -L ~/.gitconfig ]]; then
+    echo ".gitconfig: already symlinked"
+else
+    [[ -f ~/.gitconfig ]] && mv ~/.gitconfig ~/.gitconfig.bak
+    ln -s ~/code/dotfiles/.gitconfig ~/.gitconfig
+    echo ".gitconfig: linked"
+fi
+
+# Global gitignore
+if [[ -L ~/.gitignore_global ]]; then
+    echo ".gitignore_global: already symlinked"
+else
+    ln -s ~/code/dotfiles/.gitignore ~/.gitignore_global
+    echo ".gitignore_global: linked"
 fi
 
 # Google Drive shortcut (only if Google Drive is installed)

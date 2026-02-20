@@ -1,21 +1,18 @@
 [user]
-	name = khalido
-	username = khalido
-	email = khalid.omar@gmail.com
+    name = khalido
+    email = khalid.omar@gmail.com
 
-[credential]
-    # 28800 is 8hr expiry, 86400 is 24hrs
-	helper = cache --timeout 28800
+[core]
+    excludesfile = ~/.gitignore_global
+    editor = zed --wait
+
+[init]
+    defaultBranch = main
+
+[push]
+    autoSetupRemote = true
 
 [alias]
-	a = add
-	cm = commit -m
-	s = status
-	p = push 
-[core]
-	excludesfile = ~/.gitignore_global
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+    a = add
+    s = status
+    p = push

@@ -14,6 +14,26 @@ import shutil
 import sys
 
 
+def symlink_file(source: Path, target: Path):
+    """Create a symlink for a single file, handling existing files."""
+    name = target.name
+    if target.is_symlink():
+        if target.resolve() == source.resolve():
+            print(f"  {name}: already linked")
+        else:
+            target.unlink()
+            target.symlink_to(source)
+            print(f"  {name}: updated symlink")
+    elif target.exists():
+        backup = target.with_suffix(target.suffix + ".bak")
+        target.rename(backup)
+        target.symlink_to(source)
+        print(f"  {name}: backed up & linked")
+    else:
+        target.symlink_to(source)
+        print(f"  {name}: linked")
+
+
 def main():
     dotfiles_claude = Path(__file__).parent.resolve() / "claude"
     claude_home = Path.home() / ".claude"
@@ -49,8 +69,11 @@ def main():
         skills_target.symlink_to(skills_source)
         print("  skills/: linked")
 
-    # Copy config files (not symlinked to avoid issues)
-    files_to_copy = ["settings.json", "CLAUDE.md", "statusline.py"]
+    # Symlink CLAUDE.md
+    symlink_file(dotfiles_claude / "CLAUDE.md", claude_home / "CLAUDE.md")
+
+    # Copy other config files
+    files_to_copy = ["settings.json", "statusline.py"]
 
     for filename in files_to_copy:
         source = dotfiles_claude / filename
