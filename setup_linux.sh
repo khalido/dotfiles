@@ -64,7 +64,8 @@ sudo apt-get install -y \
     curl wget gnupg ca-certificates \
     git \
     unzip zip \
-    usbutils
+    usbutils \
+    ncurses-term
 
 header "CLI tools (apt)"
 # All in Ubuntu 24.04 main. Apt versions of bat/zoxide etc are slightly
@@ -145,46 +146,18 @@ fi
 
 header "Python tools (via uv)"
 # uv tool installs are isolated venvs, so each tool is cheap-ish to add
-# without polluting the global Python environment.
+# without polluting the global Python environment. Stderr is NOT
+# suppressed — uv prints progress + "already installed" hints there.
 python_tools=(
     harlequin   # terminal SQL client — handy for poking sqlite DBs
     llm         # Simon Willison's LLM CLI — useful interactively + scriptable
 )
 for tool in "${python_tools[@]}"; do
-    uv tool install "$tool" 2>/dev/null || echo "  $tool: already installed"
+    uv tool install "$tool"
 done
 
-header "Node.js (via fnm)"
-# fnm's installer writes its env into ~/.bashrc automatically (no
-# --skip-shell). That's the one bashrc edit we tolerate, since Node has
-# to be on PATH for npm to work in new shells.
-if ! command -v fnm &>/dev/null; then
-    curl -fsSL https://fnm.vercel.app/install | bash
-fi
-# Load fnm into the current shell so the npm step below works.
-export FNM_DIR="$HOME/.local/share/fnm"
-[[ -d "$FNM_DIR" ]] && export PATH="$FNM_DIR:$PATH"
-eval "$(fnm env 2>/dev/null || true)"
-
-# Pin Node LTS via the shared fnm.py from dotfiles if available; otherwise
-# install LTS directly.
-if [[ -f ~/code/dotfiles/fnm.py ]]; then
-    uv run ~/code/dotfiles/fnm.py install --yes
-else
-    fnm install --lts
-    fnm default lts-latest
-fi
-
-header "Global npm tools"
-# Both run fine over SSH:
-#   agent-browser drives a headless Chromium for scraping / screenshots
-#     (run `agent-browser install` once per box if you actually need
-#     Chromium — it's a ~300MB download, not bundled here).
-#   opencode-ai is the OpenCode TUI / scriptable CLI — `opencode run "…"`
-#     works non-interactively, great over SSH.
-npm install -g agent-browser opencode-ai
-
 header "Dotfiles"
+# Cloned before the Node section so fnm.py is available when fnm runs.
 mkdir -p ~/code
 if [[ ! -d ~/code/dotfiles ]]; then
     git clone https://github.com/khalido/dotfiles ~/code/dotfiles
@@ -208,6 +181,36 @@ else
     ln -s ~/code/dotfiles/.gitignore ~/.gitignore_global
     echo ".gitignore_global: linked"
 fi
+
+header "Node.js (via fnm)"
+# fnm's installer writes its env into ~/.bashrc automatically (no
+# --skip-shell). That's the one bashrc edit we tolerate, since Node has
+# to be on PATH for npm to work in new shells.
+if ! command -v fnm &>/dev/null; then
+    curl -fsSL https://fnm.vercel.app/install | bash
+fi
+# Load fnm into the current shell so the npm step below works.
+export FNM_DIR="$HOME/.local/share/fnm"
+[[ -d "$FNM_DIR" ]] && export PATH="$FNM_DIR:$PATH"
+eval "$(fnm env 2>/dev/null || true)"
+
+# Pin Node LTS via the shared fnm.py from dotfiles (now cloned above);
+# otherwise fall back to plain `fnm install --lts`.
+if [[ -f ~/code/dotfiles/fnm.py ]]; then
+    uv run ~/code/dotfiles/fnm.py install --yes
+else
+    fnm install --lts
+    fnm default lts-latest
+fi
+
+header "Global npm tools"
+# Both run fine over SSH:
+#   agent-browser drives a headless Chromium for scraping / screenshots
+#     (run `agent-browser install` once per box if you actually need
+#     Chromium — it's a ~300MB download, not bundled here).
+#   opencode-ai is the OpenCode TUI / scriptable CLI — `opencode run "…"`
+#     works non-interactively, great over SSH.
+npm install -g agent-browser opencode-ai
 
 header "Claude Code"
 # Official installer drops the `claude` binary into ~/.local/bin.
