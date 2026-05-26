@@ -119,7 +119,11 @@ else
 fi
 
 header "fastfetch (GitHub release — not in Ubuntu 24.04 apt)"
-gh_deb_install fastfetch fastfetch-cli/fastfetch 'linux-amd64\.deb$'
+# fastfetch release assets: linux-amd64.deb (x86_64) / linux-aarch64.deb (arm64).
+# `dpkg --print-architecture` gives amd64 / arm64; map arm64 → aarch64 for the URL.
+DEB_ARCH=$(dpkg --print-architecture)
+[[ "$DEB_ARCH" == "arm64" ]] && FF_ARCH=aarch64 || FF_ARCH=amd64
+gh_deb_install fastfetch fastfetch-cli/fastfetch "linux-${FF_ARCH}\.deb\$"
 
 header "starship (prompt)"
 if ! command -v starship &>/dev/null; then
