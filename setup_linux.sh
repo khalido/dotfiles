@@ -47,8 +47,14 @@ gh_deb_install() {
 
 header "Pop!_OS / Ubuntu Setup"
 
-# Sudo upfront, kept alive while the script runs.
-sudo -v
+# Validate sudo upfront so apt/etc. don't pause mid-install for a password.
+# The background loop refreshes the sudo timestamp every 60s so long apt
+# runs never re-prompt. Loop dies when the script exits.
+echo "This script needs sudo (apt, /etc/* writes). You'll be prompted once."
+if ! sudo -v; then
+    echo "sudo authentication failed — aborting." >&2
+    exit 1
+fi
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 header "apt update + essentials"
