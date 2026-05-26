@@ -256,9 +256,10 @@ cat <<EOF
 Next steps:
 
   1. Authenticate Tailscale + enable SSH on this box:
-       sudo tailscale up --ssh
-     Visit the one-time URL it prints, approve, and you can SSH in over
-     the tailnet without managing authorized_keys.
+       sudo tailscale up --ssh --qr
+     Scan the QR code with your phone (or visit the printed URL if you'd
+     rather) and approve. You can SSH in over the tailnet from then on
+     without managing authorized_keys.
 
   2. Open a new shell (or run \`exec bash\`) so fnm/Node land on PATH.
 
