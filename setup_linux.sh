@@ -153,7 +153,7 @@ header "Node.js (via fnm)"
 # --skip-shell). That's the one bashrc edit we tolerate, since Node has
 # to be on PATH for npm to work in new shells.
 if ! command -v fnm &>/dev/null; then
-    curl -fsSL https://fnm.vercel.app/install.sh | bash
+    curl -fsSL https://fnm.vercel.app/install | bash
 fi
 # Load fnm into the current shell so the npm step below works.
 export FNM_DIR="$HOME/.local/share/fnm"
