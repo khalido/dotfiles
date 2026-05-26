@@ -19,9 +19,11 @@ header() {
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 }
 
-# Install a .deb from a GitHub release. Picks the first asset whose URL
-# matches `pattern` (extended regex). Skips if the binary is on PATH.
+# Install a .deb from a GitHub release. Picks the first asset whose
+# filename matches `pattern` (PCRE-style regex via jq's `test`). Skips
+# if the binary is on PATH.
 #   gh_deb_install <binary-name> <owner/repo> <regex>
+# Requires jq (installed earlier in the apt step).
 gh_deb_install() {
     local cmd="$1" repo="$2" pattern="$3"
     if command -v "$cmd" &>/dev/null; then
@@ -30,9 +32,8 @@ gh_deb_install() {
     fi
     local url
     url=$(curl -fsSL "https://api.github.com/repos/$repo/releases/latest" \
-          | grep -oE '"browser_download_url":\s*"[^"]+"' \
-          | grep -oE 'https://[^"]+' \
-          | grep -E "$pattern" \
+          | jq -r --arg pat "$pattern" \
+              '.assets[] | select(.name | test($pat)) | .browser_download_url' \
           | head -1)
     if [[ -z "$url" ]]; then
         echo "  $cmd: no asset matching '$pattern' in $repo latest"
@@ -74,6 +75,7 @@ sudo apt-get install -y \
     ripgrep fd-find bat \
     jq tree \
     btop \
+    ncdu \
     tldr \
     tmux \
     micro \
@@ -91,10 +93,14 @@ mkdir -p ~/.local/bin
 export PATH="$HOME/.local/bin:$PATH"
 
 header "GitHub CLI (apt repo)"
+# Curl-based variant of the official wget recipe at
+# https://github.com/cli/cli/blob/trunk/docs/install_linux.md — uses
+# `tee` (standard) instead of `dd`, and mkdir's both /etc/apt subdirs
+# defensively in case we ever land on a stripped image.
 if ! command -v gh &>/dev/null; then
-    sudo mkdir -p -m 755 /etc/apt/keyrings
+    sudo mkdir -p -m 755 /etc/apt/keyrings /etc/apt/sources.list.d
     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-        | sudo dd of=/etc/apt/keyrings/githubcli-archive-keyring.gpg
+        | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null
     sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
         | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
@@ -264,7 +270,7 @@ Next steps:
 
 What's installed:
 
-  CLI:        ripgrep, fd, bat, jq, tree, btop, tldr, tmux,
+  CLI:        ripgrep, fd, bat, jq, tree, btop, ncdu, tldr, tmux,
               micro (editor), fzf, git-delta, zoxide, eza, fastfetch,
               starship (prompt), gh, tailscale
   Python:     uv + harlequin, llm
