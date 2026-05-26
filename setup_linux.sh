@@ -73,7 +73,7 @@ header "CLI tools (apt)"
 sudo apt-get install -y \
     ripgrep fd-find bat \
     jq tree \
-    htop btop \
+    btop \
     tldr \
     tmux \
     micro \
@@ -264,7 +264,7 @@ Next steps:
 
 What's installed:
 
-  CLI:        ripgrep, fd, bat, jq, tree, htop, btop, tldr, tmux,
+  CLI:        ripgrep, fd, bat, jq, tree, btop, tldr, tmux,
               micro (editor), fzf, git-delta, zoxide, eza, fastfetch,
               starship (prompt), gh, tailscale
   Python:     uv + harlequin, llm
