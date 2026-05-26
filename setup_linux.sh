@@ -266,7 +266,12 @@ Next steps:
        sudo timedatectl set-timezone Australia/Sydney
 
   4. If this box will drive a headless browser (agent-browser):
-       agent-browser install        # ~300MB Chromium-for-Testing, one-time
+       agent-browser install        # x86_64: downloads Chrome-for-Testing (~300MB)
+     On ARM64 (Pi 5, OrbStack on Apple Silicon) Chrome-for-Testing has no
+     Linux build — follow agent-browser's error message to install system
+     chromium instead:
+       sudo apt install chromium
+       agent-browser --executable-path /usr/bin/chromium
 
 What's installed:
 

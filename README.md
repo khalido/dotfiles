@@ -1,6 +1,8 @@
 # Dotfiles
 
-Mac setup scripts and config files. Install apps via Homebrew where available.
+Mac + Linux setup scripts and config files. Mac uses Homebrew + casks for GUI
+apps; Linux uses apt + curl-scripts + GitHub releases (no Homebrew on Linux —
+gets messy on a system package manager's turf).
 
 ## New Mac Setup
 
@@ -17,6 +19,27 @@ After the script completes:
 2. **Restore API keys** - see [Migrate Secrets](#migrate-secrets) below
 3. **Sign into apps**: Chrome, Raycast, Obsidian, VS Code (settings sync)
 4. **Install Raycast extensions**: Coffee (keep awake), AI (quick questions)
+
+## New Linux Setup (Pop!_OS / Ubuntu 24.04)
+
+For modest boxes — X230-class servers, Tailscale gateways, OrbStack VMs. apt
+essentials + a small CLI toolbox (ripgrep, fd, bat, fzf, zoxide, etc.), uv +
+fnm, Tailscale, Claude Code. Per-app extras (libusb-dev, caddy, …) stay out;
+add per-box as needed.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/khalido/dotfiles/master/setup_linux.sh -o ~/setup_linux.sh
+bash ~/setup_linux.sh
+```
+
+After the script completes:
+
+1. **Authenticate Tailscale + enable SSH**: `sudo tailscale up --ssh` (visit the printed URL, approve — SSH over the tailnet from then on, no `authorized_keys` plumbing)
+2. **Open a new shell** (or `exec bash`) so fnm/Node + starship + zoxide land on PATH
+3. **Optional**: set timezone with `sudo timedatectl set-timezone Australia/Sydney`
+4. **If driving a headless browser**: `agent-browser install` (~300 MB Chromium-for-Testing, one-time)
+
+The script is designed for testing in OrbStack first (`orb create ubuntu:24.04 popos-test`), then running on real hardware once you trust it. See script comments for what's deliberately excluded.
 
 ## Migrate Secrets
 
@@ -41,7 +64,8 @@ source ~/.zshrc
 ### Setup Scripts
 
 - **setup_mac.sh** - Full Mac setup: Homebrew, uv, CLI tools, apps, macOS settings
-- **setup_claude_code.py** - Claude Code config: symlinks skills, copies settings
+- **setup_linux.sh** - Pop!_OS / Ubuntu 24.04 setup: apt + curl-script CLI tools, uv, fnm, Tailscale, Claude Code (no GUI apps, no zsh — Linux boxes stay on bash)
+- **setup_claude_code.py** - Claude Code config: symlinks skills, copies settings (Mac default; opt-in on Linux)
 - **makesymlinks.sh** - Symlink dotfiles (.gitconfig, .zshrc, etc.) to home dir
 
 ### Utility Scripts (run with uv)
